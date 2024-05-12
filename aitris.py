@@ -16,6 +16,7 @@ from modules.tetromino import Tetromino
 from modules.board import Board
 from modules.renderer import Renderer
 from modules.input import Input
+from ai.ai_manager import AiManager
 
 # Inizializziamo PyGame
 pygame.init()
@@ -34,6 +35,9 @@ tetromino = Tetromino()
 board = Board()
 renderer = Renderer()
 input_handler = Input()
+
+# Istanziamo la classe per la IA
+ai_manager = AiManager("./executables/dlv2", "./ai/tetris_ai.asp")
 
 # Contatori di sistema per il flow del gioco
 fall_speed = 10
@@ -55,6 +59,22 @@ while loop:
         # funzione quasi identica all'altra.
         tetromino.position[0] += 1
         fall_counter = 0
+
+        ai_manager.add_position(tetromino.position[0], tetromino.position[1])
+        x_position = ai_manager.get_position()
+        # controlliamo che x_position non sia vuota
+        if len(x_position) != 0:
+            print(x_position[0])
+            wanted_distance_difference = int(x_position[0]) - tetromino.position[1]
+            for pressed_x in range(wanted_distance_difference):
+                # QUESTO METODO NON VA BENE. Prova ad immaginare il caso in cui:
+                # 1) la board NON si aggiorna in tempo,
+                # 2) intanto il tetromino va molteplici volte a destra,
+                # 3) a destra del tetromino (proprio dove sta andando) c'è una serie di blocchi già posti.
+                # Risultato? Il tetromino "entra" dentro il blocco, in alcuni casi disegnando anche all'interno del blocco (occupando i buchi)
+                # Possibile soluzione: fare il controllo _bene_ sulle collisioni in asp non dovrebbe rendere questo scenario possibile(?)
+                tetromino.position[1] += 1
+                # Più che fare +1 o -1 (o comunque fare moltiplicazioni per -1), sarebbe più corretto fargli premere un tasto, proprio, appunto, come se stesse giocando
 
         # Se il tetromino NON incontra qualcosa nella sua discesa naturale
         if not board.is_valid_position(tetromino.get_shape(), tetromino.get_position()):
