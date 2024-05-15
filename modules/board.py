@@ -1,3 +1,6 @@
+#import time
+
+
 class Board:
     def __init__(self, rows=20, cols=10):
         self.rows = rows
@@ -26,7 +29,11 @@ class Board:
         for row in range(len(shape)):
             for col in range(len(shape[0])):
                 if shape[row][col] != 0:
-                    self.grid[position[0] + row][position[1] + col] = color
+                     self.grid[position[0] + row][position[1] + col] = color
+                    # TODO IL CODICE DI SOPRA è QUELLO GIUSTO!
+                    # queste 2 righe qui sotto servono solo per debbugare meglio il comportamento della IA considerando il singolo pezzo, da solo, sulla board
+                    #self.grid = [[0] * 10 for _ in range(20)]
+                    #time.sleep(0.3)
 
     def clear_lines(self):
         lines_cleared = 0
@@ -43,3 +50,6 @@ class Board:
 
         self.grid = new_grid
         return lines_cleared
+
+    def get_grid(self):
+        return self.grid

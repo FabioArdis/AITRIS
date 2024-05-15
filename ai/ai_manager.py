@@ -4,6 +4,7 @@ from languages.asp.asp_mapper import ASPMapper
 from languages.asp.asp_input_program import ASPInputProgram
 
 from ai.position import AiPosition
+#from ai.tetromino_ia import TetrominoIa
 
 
 def load_asp_program_from_file(asp_program_path, asp_input_program_from_file):
@@ -33,6 +34,7 @@ class AiManager():
 
         self.handler = DesktopHandler(DLV2DesktopService(executable_path))
         ASPMapper.get_instance().register_class(AiPosition)
+        #ASPMapper.get_instance().register_class(TetrominoIa)
         self.asp_input_program_from_file = ASPInputProgram()
         self.asp_input_program_from_python = ASPInputProgram()
 
@@ -59,11 +61,29 @@ class AiManager():
 
     def get_position(self):
         list_aiPosition = []
-        get_first_answer_set = self.get_answer_set()[0]
-        for object in get_first_answer_set.get_atoms():
-            if isinstance(object, AiPosition):
-                # print(object.get_y())
-                list_aiPosition.append(object.get_y())
+        answerSet = self.get_answer_set()
+        if (answerSet):
+            get_first_answer_set = answerSet[0]
+            for object in get_first_answer_set.get_atoms():
+                if isinstance(object, AiPosition):
+                    # print(object.get_x())
+                    # print(object.get_y())
+                    list_aiPosition.append(object.get_x())
+                    list_aiPosition.append(object.get_y())
 
-        print("list: " + str(list_aiPosition))
+            print("list: " + str(list_aiPosition))
         return list_aiPosition
+
+    def add_tetromino(self, shape):
+        self.asp_input_program_from_python.add_program("spawnedTetromino(" + str(shape) + ").")
+        # print("get_programs is: " + self.asp_input_program_from_python.get_programs())
+        self.handler.add_program(self.asp_input_program_from_python)
+
+    def add_busy_cells(self, board):
+        for row in range(len(board)):
+            for col in range(len(board[0])):
+                if (board[row][col] == 1):
+                    print("row and col are: ", row, col)
+                    self.asp_input_program_from_python.add_program("busyCell(cell(" + str(row) + ", " + str(col) + ")).")
+        # print("get_programs is: " + self.asp_input_program_from_python.get_programs())
+        self.handler.add_program(self.asp_input_program_from_python)

@@ -1,7 +1,6 @@
 from languages.predicate import Predicate
 
 
-# Questa classe l'ho scritta a casaccio in previsione futura, ora non è nemmeno utilizzata
 class TetrominoIa(Predicate):
 
     predicate_name = "tetromino"
