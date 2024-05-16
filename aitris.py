@@ -17,6 +17,7 @@ from modules.board import Board
 from modules.renderer import Renderer
 from modules.input import Input
 from ai.ai_manager import AiManager
+import time
 
 # Inizializziamo PyGame
 pygame.init()
@@ -100,6 +101,7 @@ while loop:
             ###
             # INIZIO CODICE AI
             ###
+            #time.sleep(1)
 
     # Fill nero
     window.fill((0, 0, 0))

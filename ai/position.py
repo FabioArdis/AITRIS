@@ -5,10 +5,11 @@ class AiPosition(Predicate):
 
     predicate_name = "aiPosition"
 
-    def __init__(self, x=None, y=None):
-        Predicate.__init__(self, [("x"), ("y")])
+    def __init__(self, x=None, y=None, shape=None):
+        Predicate.__init__(self, [("x"), ("y"), ("shape")])
         self.x = x
         self.y = y
+        self.shape = shape
 
     def get_x(self):
         return self.x
@@ -21,3 +22,9 @@ class AiPosition(Predicate):
 
     def set_y(self, y):
         self.y = y
+
+    def get_shape(self):
+        return self.shape
+
+    def set_shape(self, shape):
+        self.shape = shape
