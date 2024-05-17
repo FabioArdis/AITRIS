@@ -22,9 +22,11 @@ class Renderer:
                 else:
                     pygame.draw.rect(window, self.GREEN, (col * block_size, row * block_size, block_size, block_size), 1)
 
-    def render_game_info(self, window, game):
+    def render_game_info(self, window, game, tetrominoCounter):
         text_surface = self.font.render(f"Score: {game.score} Level: {game.level}", True, self.WHITE)
         window.blit(text_surface, (400, 10))
+        text_surface = self.font.render(f"Tetromino N°{tetrominoCounter}", True, self.WHITE)
+        window.blit(text_surface, (400, 30))
 
     def render_tetromino(self, window, tetromino):
         block_size = 30

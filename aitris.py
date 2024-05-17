@@ -43,6 +43,7 @@ ai_manager = AiManager("./executables/dlv2", "./ai/tetris_ai.asp")
 # Contatori di sistema per il flow del gioco
 fall_speed = 10
 fall_counter = 0
+tetromino_counter = 1
 
 # Loop principale
 loop = True
@@ -61,7 +62,6 @@ while loop:
         tetromino.position[0] += 1
         fall_counter = 0
 
-
         # Se il tetromino NON incontra qualcosa nella sua discesa naturale
         if not board.is_valid_position(tetromino.get_shape(), tetromino.get_position()):
             # Aggiustiamo la posizione e aggiorniamo la griglia.
@@ -75,6 +75,7 @@ while loop:
                 loop = False
             # Infine, creiamo un altro tetromino.
             tetromino = Tetromino()
+            tetromino_counter += 1
 
             ###
             # INIZIO CODICE AI
@@ -108,7 +109,7 @@ while loop:
 
     # Potrei unirlo in un'unica funzione render() che include tutte e tre
     renderer.render_board(window, board)
-    renderer.render_game_info(window, game)
+    renderer.render_game_info(window, game, tetromino_counter)
     renderer.render_tetromino(window, tetromino)
 
     # Aggiorniamo finalmente il display
