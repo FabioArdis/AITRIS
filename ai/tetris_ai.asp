@@ -5,7 +5,7 @@
 % OUTPUT
 %
 
-rows(0..15). %20
+rows(0..19). %20
 cols(0..9).
 cell(R,C) :- rows(R), cols(C).
 
@@ -24,13 +24,12 @@ freeCell(R,C) | notFreeCell(R,C) :- cell(R,C).
 
 % aiPosition for shapes defined like [[_,_,_], [_,_,_]] (for shape: 'T', 'L', 'J', 'Z, S')
 aiPosition(R, C, A,B,C1, D,E,F) | notAiPosition(R, C, A,B,C1, D,E,F) :- spawnedTetromino(A,B,C1, D,E,F), freeCell(R,C).
+
 % aiPosition for shapes defined like [[_,_,_,_]] (for shape: 'I')
 aiPosition(R, C, A,B,C1,D) | notAiPosition(R, C, A,B,C1,D) :- spawnedTetromino(A,B,C1,D), freeCell(R,C).
+
 % aiPosition for shapes defined like [[_,_],[_,_]] (for shape: 'CUBE')
 aiPosition(R, C, A,B, C1,D) | notAiPosition(R, C, A,B, C1,D) :- spawnedTetromino(A,B, C1,D), freeCell(R,C).
-
-%, R1 = #max{R2:aiPosition(R2,_,[[A,B,C], [D,E,F]])}. %, C1=#max{C:aiPosition(_,C)}.
-%:~ aiPosition(R, C, [[A,B,C1], [D,E,F]]), R>14. [R@1] % stavo cercando di mettere un "possibilmente scegli la R piu' grande possibile", ma quel che ho scritto qui non funziona
 
 
 % Ricorda che le lettere A,B,C1,D,E,F di spawnedTetromino[] sono disposte cosi:
@@ -78,8 +77,11 @@ rotatedTetromino("Left", A,D, B,E, C1,F) :- spawnedTetromino(A,B,C1, D,E,F).
 %
 % Find Best Position (work in progress)
 %
-%bestPos(R, C) :- R = #max{R1 : aiPosition(R1, C, [[_,_,_], [_,_,_]])}.%, aiPosition(R, C, [[_,_,_], [_,_,_]]). %, C = #min{C1 : aiPosition(R, C1, [[_,_,_], [_,_,_]])}.
+bestPos(R, C) :- R = #max{R1 : aiPosition(R1, C, _,_,_, _,_,_)}, aiPosition(R, C, _,_,_, _,_,_), C = #min{C1 : aiPosition(R, C1, _,_,_, _,_,_)}.
 %:~ aiPosition(R, C, [[A,B,C1],[D,E,F]]), R>=15. [R@1]
 %:~ aiPosition(R, C, [[A,B,C1],[D,E,F]]), R>=10. [R@500]
 %:~ aiPosition(R, C, [[A,B,C1],[D,E,F]]), R>=0. [R@1000]
 %:~ aiPosition(R, _, [[_,_,_], [_,_,_]]), R=#min{R1:aiPosition(R1, _, [[_,_,_], [_,_,_]])}.
+
+%, R1 = #max{R2:aiPosition(R2,_,[[A,B,C], [D,E,F]])}. %, C1=#max{C:aiPosition(_,C)}.
+%:~ aiPosition(R, C, [[A,B,C1], [D,E,F]]), R>14. [R@1] % stavo cercando di mettere un "possibilmente scegli la R piu' grande possibile", ma quel che ho scritto qui non funziona

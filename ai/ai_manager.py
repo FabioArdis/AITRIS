@@ -106,11 +106,10 @@ class AiManager():
 
         self.handler.add_program(self.asp_input_program_from_python)
 
-    def add_busy_cells(self, board):
-        for row in range(len(board)):
-            for col in range(len(board[0])):
-                if (board[row][col] != 0):
-                    #print("row and col are: ", row, col)
-                    self.asp_input_program_from_python.add_program("busyCell(" + str(row) + ", " + str(col) + ").")
-        #print("get_programs is: " + self.asp_input_program_from_python.get_programs())
+    def add_busy_cells(self, list_of_busy_cells):
+        for coordinate in list_of_busy_cells:
+            # print("row and col BUSY are: ", coordinate[0], coordinate[1])
+            self.asp_input_program_from_python.add_program("busyCell(" + str(coordinate[0]) + ", " + str(coordinate[1]) + ").")
+
+        # print("get_programs is: " + self.asp_input_program_from_python.get_programs())
         self.handler.add_program(self.asp_input_program_from_python)

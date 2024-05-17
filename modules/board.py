@@ -51,5 +51,13 @@ class Board:
         self.grid = new_grid
         return lines_cleared
 
-    def get_grid(self):
-        return self.grid
+    def get_list_of_busy_cells(self):
+
+        list_of_busy_cells = []
+        for row in range(len(self.grid)):
+            for col in range(len(self.grid[0])):
+                if (self.grid[row][col] != 0):
+                    list_of_busy_cells.append((row, col))
+
+        # print("list of busy cells: ", list_of_busy_cells)
+        return list_of_busy_cells
