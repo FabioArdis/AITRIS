@@ -79,7 +79,7 @@ while loop:
             ###
             # INIZIO CODICE AI
             ###
-            ai_manager.add_position(tetromino.position[0], tetromino.position[1])
+            #ai_manager.add_position(tetromino.position[0], tetromino.position[1])
 
             print("get_shape is", tetromino.get_shape())
             ai_manager.add_tetromino(tetromino.get_shape())

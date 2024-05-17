@@ -4,6 +4,7 @@ from languages.asp.asp_mapper import ASPMapper
 from languages.asp.asp_input_program import ASPInputProgram
 
 from ai.position import AiPosition
+from ai.bestPos import AiBestPos
 #from ai.tetromino_ia import TetrominoIa
 
 
@@ -34,7 +35,8 @@ class AiManager():
 
         self.handler = DesktopHandler(DLV2DesktopService(executable_path))
         ASPMapper.get_instance().register_class(AiPosition)
-        #ASPMapper.get_instance().register_class(TetrominoIa)
+        # Find Best Position (work in progress)
+        ASPMapper.get_instance().register_class(AiBestPos)
         self.asp_input_program_from_file = ASPInputProgram()
         self.asp_input_program_from_python = ASPInputProgram()
 
@@ -52,6 +54,8 @@ class AiManager():
         # cioè, dopo che fai lo start_sync, il "program" è caricato definitivamente
         self.asp_input_program_from_python.clear_all()
 
+        # Find Best Position (work in progress)
+        #return answerSets.get_optimal_answer_sets()
         return answerSets.get_answer_sets()
 
     def add_position(self, x, y):
@@ -75,9 +79,31 @@ class AiManager():
             print("list: " + str(list_aiPosition))
         return list_aiPosition
 
+    # Find Best Position (work in progress)
+    def get_BEST_position(self):
+        list_aiPosition = []
+        answerSet = self.get_answer_set()
+        if (answerSet):
+            #print("answer set is: ", answerSet)
+            get_first_answer_set = answerSet[0]
+            for object in get_first_answer_set.get_atoms():
+                if isinstance(object, AiBestPos):
+                    # print(object.get_x())
+                    # print(object.get_y())
+                    list_aiPosition.append(object.get_row())
+                    list_aiPosition.append(object.get_col())
+
+            print("list: " + str(list_aiPosition))
+        return list_aiPosition
+
     def add_tetromino(self, shape):
-        self.asp_input_program_from_python.add_program("spawnedTetromino(" + str(shape) + ").")
-        #print("get_programs is: " + self.asp_input_program_from_python.get_programs())
+
+        spawnedTetromino_str = "spawnedTetromino(" + str(shape).replace("[","").replace("]","") + ")."
+        # print(spawnedTetromino_str)
+
+        self.asp_input_program_from_python.add_program(spawnedTetromino_str) # "spawnedTetromino(" + str(shape) + ")."
+        # print("get_programs is: " + self.asp_input_program_from_python.get_programs())
+
         self.handler.add_program(self.asp_input_program_from_python)
 
     def add_busy_cells(self, board):
