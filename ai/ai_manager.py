@@ -6,6 +6,8 @@ from languages.asp.asp_input_program import ASPInputProgram
 from ai.position import AiPosition
 from ai.bestPos import AiBestPos
 #from ai.tetromino_ia import TetrominoIa
+from ai.timesToRotate import AiTimesToRotate
+
 
 
 def load_asp_program_from_file(asp_program_path, asp_input_program_from_file):
@@ -37,8 +39,11 @@ class AiManager():
         ASPMapper.get_instance().register_class(AiPosition)
         # Find Best Position (work in progress)
         ASPMapper.get_instance().register_class(AiBestPos)
+        ASPMapper.get_instance().register_class(AiTimesToRotate)
         self.asp_input_program_from_file = ASPInputProgram()
         self.asp_input_program_from_python = ASPInputProgram()
+
+        self.times = 0
 
         load_asp_program_from_file(asp_program_path, self.asp_input_program_from_file)
         self.handler.add_program(self.asp_input_program_from_file)
@@ -113,3 +118,6 @@ class AiManager():
 
         # print("get_programs is: " + self.asp_input_program_from_python.get_programs())
         self.handler.add_program(self.asp_input_program_from_python)
+
+    def get_times(self):
+        return self.times

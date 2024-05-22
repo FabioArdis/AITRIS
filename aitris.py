@@ -111,11 +111,16 @@ while loop:
             ai_manager.add_busy_cells(board.get_list_of_busy_cells())
 
             position = ai_manager.get_BEST_position()
+
             # controlliamo che position non sia vuota
             if len(position) != 0:
                 renderer.add_to_log(f"Row decided by AI: {position[0]} --- Col decided by AI: {position[1]}", window)
                 print("position[0] is: ", position[0])
                 print("position[1] is: ", position[1])
+
+                # Rotate the number of times calculated by .asp
+                for a in range(int(ai_manager.get_times())):
+                    tetromino.rotate(board)
                 # QUESTO METODO NON VA BENE. Prova ad immaginare il caso in cui:
                 # 1) la board NON si aggiorna in tempo,
                 # 2) intanto il tetromino va molteplici volte a destra,
