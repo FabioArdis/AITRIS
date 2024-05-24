@@ -36,6 +36,7 @@ rotatedTetromino(3, C1,F, B,E, A,D) :- spawnedTetromino(A,B,C1, D,E,F). % 270°
 :- aiPosition(R, C, D,A, E,B, F,C1), rotatedTetromino(1, D,A, E,B, F,C1), not freeCell(R, C+2), B=1.
 :- aiPosition(R, C, D,A, E,B, F,C1), rotatedTetromino(1, D,A, E,B, F,C1), not freeCell(R + 1, C), F=1.
 :- aiPosition(R, C, D,A, E,B, F,C1), rotatedTetromino(1, D,A, E,B, F,C1), not freeCell(R + 1, C+1), C1=1.
+:- aiPosition(R, C, D,A, E,B, F,C1), rotatedTetromino(1, D,A, E,B, F,C1), not freeCell(R + 1, C+2), E=1.
 
 % 180°
 :- aiPosition(R, C, F,E,D, C1,B,A), rotatedTetromino(2, F,E,D, C1,B,A), not freeCell(R, C), F=1.
@@ -43,6 +44,7 @@ rotatedTetromino(3, C1,F, B,E, A,D) :- spawnedTetromino(A,B,C1, D,E,F). % 270°
 :- aiPosition(R, C, F,E,D, C1,B,A), rotatedTetromino(2, F,E,D, C1,B,A), not freeCell(R, C+2), D=1.
 :- aiPosition(R, C, F,E,D, C1,B,A), rotatedTetromino(2, F,E,D, C1,B,A), not freeCell(R + 1, C), C1=1.
 :- aiPosition(R, C, F,E,D, C1,B,A), rotatedTetromino(2, F,E,D, C1,B,A), not freeCell(R + 1, C+1), B=1.
+:- aiPosition(R, C, F,E,D, C1,B,A), rotatedTetromino(2, F,E,D, C1,B,A), not freeCell(R + 1, C+2), A=1.
 
 % 270°
 :- aiPosition(R, C, C1,F, B,E, A,D), rotatedTetromino(3, C1,F, B,E, A,D), not freeCell(R, C), C1=1.
@@ -50,7 +52,7 @@ rotatedTetromino(3, C1,F, B,E, A,D) :- spawnedTetromino(A,B,C1, D,E,F). % 270°
 :- aiPosition(R, C, C1,F, B,E, A,D), rotatedTetromino(3, C1,F, B,E, A,D), not freeCell(R, C+2), E=1.
 :- aiPosition(R, C, C1,F, B,E, A,D), rotatedTetromino(3, C1,F, B,E, A,D), not freeCell(R + 1, C), A=1.
 :- aiPosition(R, C, C1,F, B,E, A,D), rotatedTetromino(3, C1,F, B,E, A,D), not freeCell(R + 1, C+1), D=1.
-
+:- aiPosition(R, C, C1,F, B,E, A,D), rotatedTetromino(3, C1,F, B,E, A,D), not freeCell(R + 1, C+2), B=1.
 
 % Troviamo la posizione migliore del tetramino
 bestPos(R, C) :- R = #max{R1 : aiPosition(R1, _, _, _, _, _, _, _)}, aiPosition(R, C, _, _, _, _, _, _).
