@@ -116,13 +116,16 @@ while loop:
                 renderer.add_to_log(f"Row decided by AI: {position[0]} --- Col decided by AI: {position[1]}", window)
                 print("position[0] is: ", position[0])
                 print("position[1] is: ", position[1])
-                # QUESTO METODO NON VA BENE. Prova ad immaginare il caso in cui:
-                # 1) la board NON si aggiorna in tempo,
-                # 2) intanto il tetromino va molteplici volte a destra,
-                # 3) a destra del tetromino (proprio dove sta andando) c'è una serie di blocchi già posti.
-                # Risultato? Il tetromino "entra" dentro il blocco, in alcuni casi disegnando anche all'interno del blocco (occupando i buchi)
-                # Possibile soluzione: fare il controllo _bene_ sulle collisioni in asp non dovrebbe rendere questo scenario possibile(?)
-                tetromino.position[0] = int(position[0])
+
+                for n in range(ai_manager.get_rotation()):
+                    tetromino.rotate(board)
+
+                # TODO
+                if ai_manager.get_rotation() == 0:
+                    tetromino.position[0] = int(position[0])
+                else:
+                    tetromino.position[0] = int(position[0])-1
+
                 tetromino.position[1] = int(position[1])
             ###
             # FINE CODICE AI

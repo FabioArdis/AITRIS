@@ -40,6 +40,8 @@ class AiManager():
         self.asp_input_program_from_file = ASPInputProgram()
         self.asp_input_program_from_python = ASPInputProgram()
 
+        self.rotation = 0
+
         load_asp_program_from_file(asp_program_path, self.asp_input_program_from_file)
         self.handler.add_program(self.asp_input_program_from_file)
 
@@ -92,6 +94,7 @@ class AiManager():
                     # print(object.get_y())
                     list_aiPosition.append(object.get_row())
                     list_aiPosition.append(object.get_col())
+                    self.rotation = int(object.get_rotation())
 
             print("list: " + str(list_aiPosition))
         return list_aiPosition
@@ -113,3 +116,6 @@ class AiManager():
 
         # print("get_programs is: " + self.asp_input_program_from_python.get_programs())
         self.handler.add_program(self.asp_input_program_from_python)
+
+    def get_rotation(self):
+        return self.rotation
