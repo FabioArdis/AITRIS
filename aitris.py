@@ -122,9 +122,9 @@ while loop:
 
                 # TODO
                 if ai_manager.get_rotation() == 0:
-                    tetromino.position[0] = int(position[0])
-                else:
                     tetromino.position[0] = int(position[0])-1
+                else:
+                    tetromino.position[0] = int(position[0])-2
 
                 tetromino.position[1] = int(position[1])
             ###
