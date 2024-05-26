@@ -74,6 +74,9 @@ class AiManager():
                     list_aiPosition.append(object.get_row())
                     list_aiPosition.append(object.get_col())
 
+                    self.rotation = object.get_rotation()
+
+
             print("list: " + str(list_aiPosition))
         return list_aiPosition
 
@@ -87,3 +90,6 @@ class AiManager():
         for coordinate in list_of_busy_cells:
             self.asp_input_program_from_python.add_program("busyCell(" + str(coordinate[1]) + ", " + str(coordinate[0]) + ").")
         self.handler.add_program(self.asp_input_program_from_python)
+
+    def get_rotation(self):
+        return self.rotation

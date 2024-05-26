@@ -117,7 +117,11 @@ while loop:
                 print("position[0] is: ", position[0])
                 print("position[1] is: ", position[1])
 
+                for n in range(int(ai_manager.get_rotation())):
+                    tetromino.rotate(board)
+
                 tetromino.position[1] = int(position[1])
+
             ###
             # FINE CODICE AI
             ###
