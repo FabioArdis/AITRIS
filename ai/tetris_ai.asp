@@ -17,10 +17,12 @@ type(6). % S - 6
 validPosition(X, Y, 1, 0) :- cell(X, Y), cell(X + 1, Y), cell(X + 2, Y), cell(X + 1, Y + 1), not busyCell(X, Y), not busyCell(X + 1, Y), not busyCell(X + 2, Y), not busyCell(X + 1, Y + 1), spawnedTetromino(1, _, _, _,  _, _, _).
 validPosition(X, Y, 1, 1) :- cell(X + 1, Y), cell(X + 1, Y + 1), cell(X + 1, Y + 2), cell(X, Y + 1), not busyCell(X + 1, Y), not busyCell(X + 1, Y + 1), not busyCell(X + 1, Y + 2), not busyCell(X, Y + 1).
 %validPosition(X, Y, 1, 2) :- cell(X, Y), cell(X, Y + 1), cell(X + 2, Y), not busyCell(X, Y - 1), not busyCell(X + 1, Y - 1), not busyCell(X + 2, Y - 1), not busyCell(X + 1, Y).
-%validPosition(X, Y, 1, 3) :- cell(X, Y), cell(X, Y + 1), cell(X + 2, Y), not busyCell(X, Y - 1), not busyCell(X + 1, Y - 1), not busyCell(X + 2, Y - 1), not busyCell(X + 1, Y).
+validPosition(X, Y, 1, 3) :- cell(X, Y), cell(X, Y + 1), cell(X, Y + 2), cell(X + 1, Y + 1), not busyCell(X, Y), not busyCell(X, Y + 1), not busyCell(X, Y + 2), not busyCell(X + 1, Y + 1).
 
-bestPos(Y, X, 0) :- maxRot0(X, Y), maxRot90(X1, Y1), Y > Y1.
-bestPos(Y, X, 1) :- maxRot0(X1, Y1), maxRot90(X, Y), Y >= Y1.
+bestPos(Y, X, 0) :- maxRot0(X, Y), maxRot90(X1, Y1), maxRot270(X2, Y2), Y > Y1, Y > Y2.
+bestPos(Y, X, 1) :- maxRot0(X1, Y1), maxRot90(X, Y), maxRot270(X2, Y2), Y >= Y1, Y >= Y2.
+bestPos(Y, X, 3) :- maxRot0(X1, Y1), maxRot90(X2, Y2), maxRot270(X, Y), Y >= Y1, Y > Y2.
 
-maxRot0(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 1, 0)}, validPosition(X, Y, 1, R), R = 0.
-maxRot90(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 1, 1)}, validPosition(X, Y, 1, R), R = 1.
+maxRot0(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 1, 0)}, validPosition(X, Y, 1, 0).
+maxRot90(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 1, 1)}, validPosition(X, Y, 1, 1).
+maxRot270(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 1, 3)}, validPosition(X, Y, 1, 3).
