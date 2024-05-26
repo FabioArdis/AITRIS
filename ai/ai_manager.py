@@ -1,7 +1,7 @@
-from specializations.dlv2.desktop.dlv2_desktop_service import DLV2DesktopService
-from platforms.desktop.desktop_handler import DesktopHandler
-from languages.asp.asp_mapper import ASPMapper
-from languages.asp.asp_input_program import ASPInputProgram
+from embasp.specializations.dlv2.desktop.dlv2_desktop_service import DLV2DesktopService
+from embasp.platforms.desktop.desktop_handler import DesktopHandler
+from embasp.languages.asp.asp_mapper import ASPMapper
+from embasp.languages.asp.asp_input_program import ASPInputProgram
 
 from ai.position import AiPosition
 from ai.bestPos import AiBestPos
@@ -60,27 +60,6 @@ class AiManager():
         #return answerSets.get_optimal_answer_sets()
         return answerSets.get_answer_sets()
 
-    def add_position(self, x, y):
-        self.asp_input_program_from_python.add_program("position(" + str(x) + "," + str(y) + ").")
-        # print("get_programs is: " + self.asp_input_program_from_python.get_programs())
-        self.handler.add_program(self.asp_input_program_from_python)
-
-    def get_position(self):
-        list_aiPosition = []
-        answerSet = self.get_answer_set()
-        if (answerSet):
-            #print("answer set is: ", answerSet)
-            get_first_answer_set = answerSet[0]
-            for object in get_first_answer_set.get_atoms():
-                if isinstance(object, AiPosition):
-                    # print(object.get_x())
-                    # print(object.get_y())
-                    list_aiPosition.append(object.get_x())
-                    list_aiPosition.append(object.get_y())
-
-            print("list: " + str(list_aiPosition))
-        return list_aiPosition
-
     # Find Best Position (work in progress)
     def get_BEST_position(self):
         list_aiPosition = []
@@ -94,28 +73,17 @@ class AiManager():
                     # print(object.get_y())
                     list_aiPosition.append(object.get_row())
                     list_aiPosition.append(object.get_col())
-                    self.rotation = int(object.get_rotation())
 
             print("list: " + str(list_aiPosition))
         return list_aiPosition
 
-    def add_tetromino(self, shape):
-
-        spawnedTetromino_str = "spawnedTetromino(" + str(shape).replace("[","").replace("]","") + ")."
-        # print(spawnedTetromino_str)
-
-        self.asp_input_program_from_python.add_program(spawnedTetromino_str) # "spawnedTetromino(" + str(shape) + ")."
+    def add_tetromino(self, type, shape):
+        spawnedTetromino_str = "spawnedTetromino(" + str(type) + ", " + str(shape).replace("[","").replace("]","") + ")."
+        self.asp_input_program_from_python.add_program(spawnedTetromino_str)
         # print("get_programs is: " + self.asp_input_program_from_python.get_programs())
-
         self.handler.add_program(self.asp_input_program_from_python)
 
     def add_busy_cells(self, list_of_busy_cells):
         for coordinate in list_of_busy_cells:
-            # print("row and col BUSY are: ", coordinate[0], coordinate[1])
-            self.asp_input_program_from_python.add_program("busyCell(" + str(coordinate[0]) + ", " + str(coordinate[1]) + ").")
-
-        # print("get_programs is: " + self.asp_input_program_from_python.get_programs())
+            self.asp_input_program_from_python.add_program("busyCell(" + str(coordinate[1]) + ", " + str(coordinate[0]) + ").")
         self.handler.add_program(self.asp_input_program_from_python)
-
-    def get_rotation(self):
-        return self.rotation

@@ -107,7 +107,7 @@ while loop:
             #ai_manager.add_position(tetromino.position[0], tetromino.position[1])
 
             print("get_shape is", tetromino.get_shape())
-            ai_manager.add_tetromino(tetromino.get_shape())
+            ai_manager.add_tetromino(tetromino.get_type(), tetromino.get_shape())
             ai_manager.add_busy_cells(board.get_list_of_busy_cells())
 
             position = ai_manager.get_BEST_position()
@@ -116,15 +116,6 @@ while loop:
                 renderer.add_to_log(f"Row decided by AI: {position[0]} --- Col decided by AI: {position[1]}", window)
                 print("position[0] is: ", position[0])
                 print("position[1] is: ", position[1])
-
-                for n in range(ai_manager.get_rotation()):
-                    tetromino.rotate(board)
-
-                # TODO
-                if ai_manager.get_rotation() == 0:
-                    tetromino.position[0] = int(position[0])-1
-                else:
-                    tetromino.position[0] = int(position[0])-2
 
                 tetromino.position[1] = int(position[1])
             ###
