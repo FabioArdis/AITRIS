@@ -32,3 +32,8 @@ maxRot0(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 1, 0)}, validPosition(X, Y,
 maxRot90(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 1, 1)}, validPosition(X, Y, 1, 1).
 maxRot180(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 1, 2)}, validPosition(X, Y, 1, 2).
 maxRot270(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 1, 3)}, validPosition(X, Y, 1, 3).
+
+ceiling(Y1, Y) :- cell(_, Y), cell(_, Y1), Y1 < Y.
+:- bestPos(Y, X, 2), ceiling(Y1, Y), busyCell(X, Y1).
+:- bestPos(Y, X, 2), ceiling(Y1, Y), busyCell(X + 1, Y1).
+:- bestPos(Y, X, 2), ceiling(Y1, Y), busyCell(X + 2, Y1). # TODO: escludere i [][] dalla terza coordinata X
