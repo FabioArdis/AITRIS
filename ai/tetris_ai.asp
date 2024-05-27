@@ -157,9 +157,9 @@ bestPos(Y, X, 0) :- Y = #max{ Y1 : validPosition(_, Y1, 4, 0)}, validPosition(X,
 
 
 %0
-validPosition(X, Y, 0, 0) :- cell(X, Y), cell(X + 1, Y), cell(X + 1, Y + 1), cell(X + 2, Y + 1), not busyCell(X, Y), not busyCell(X + 1, Y), not busyCell(X + 1, Y + 1), not busyCell(X + 2, Y + 1), canFall(X, Y), canFall(X + 1, Y), canFall(X + 2, Y), spawnedTetromino(5, _, _, _,  _, _, _).
+validPosition(X, Y, 5, 0) :- cell(X, Y), cell(X + 1, Y), cell(X + 1, Y + 1), cell(X + 2, Y + 1), not busyCell(X, Y), not busyCell(X + 1, Y), not busyCell(X + 1, Y + 1), not busyCell(X + 2, Y + 1), canFall(X, Y), canFall(X + 1, Y), canFall(X + 2, Y), spawnedTetromino(5, _, _, _,  _, _, _).
 %90
-validPosition(X, Y, 0, 1) :- cell(X + 1, Y), cell(X, Y + 1), cell(X + 1, Y + 1), cell(X, Y + 2), not busyCell(X, Y), not busyCell(X, Y + 1), not busyCell(X + 1, Y + 1), not busyCell(X, Y + 2), canFall(X, Y), canFall(X + 1, Y), spawnedTetromino(5, _, _, _,  _, _, _).
+validPosition(X, Y, 5, 1) :- cell(X + 1, Y), cell(X, Y + 1), cell(X + 1, Y + 1), cell(X, Y + 2), not busyCell(X, Y), not busyCell(X, Y + 1), not busyCell(X + 1, Y + 1), not busyCell(X, Y + 2), canFall(X, Y), canFall(X + 1, Y), spawnedTetromino(5, _, _, _,  _, _, _).
 
 bestPos(Y, X, 0) :- maxRot0(X, Y), maxRot90(X1, Y1), Y > Y1, spawnedTetromino(5, _, _, _,  _, _, _).
 bestPos(Y, X, 1) :- maxRot0(X1, Y1), maxRot90(X, Y), Y >= Y1, spawnedTetromino(5, _, _, _,  _, _, _).
@@ -181,9 +181,9 @@ maxRot90(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 5, 1)}, validPosition(X, Y
 
 
 %0
-validPosition(X, Y, 0, 0) :- cell(X + 1, Y), cell(X + 2, Y), cell(X, Y + 1), cell(X + 1, Y + 1), not busyCell(X + 1, Y), not busyCell(X + 2, Y), not busyCell(X, Y + 1), not busyCell(X + 1, Y + 1), canFall(X, Y), canFall(X + 1, Y), canFall(X + 2, Y), spawnedTetromino(6, _, _, _,  _, _, _).
+validPosition(X, Y, 6, 0) :- cell(X + 1, Y), cell(X + 2, Y), cell(X, Y + 1), cell(X + 1, Y + 1), not busyCell(X + 1, Y), not busyCell(X + 2, Y), not busyCell(X, Y + 1), not busyCell(X + 1, Y + 1), canFall(X, Y), canFall(X + 1, Y), canFall(X + 2, Y), spawnedTetromino(6, _, _, _,  _, _, _).
 %90
-validPosition(X, Y, 0, 1) :- cell(X, Y), cell(X, Y + 1), cell(X + 1, Y + 1), cell(X + 1, Y + 2), not busyCell(X, Y), not busyCell(X, Y + 1), not busyCell(X + 1, Y + 1), not busyCell(X + 1, Y + 2), canFall(X, Y), canFall(X + 1, Y), spawnedTetromino(6, _, _, _,  _, _, _).
+validPosition(X, Y, 6, 1) :- cell(X, Y), cell(X, Y + 1), cell(X + 1, Y + 1), cell(X + 1, Y + 2), not busyCell(X, Y), not busyCell(X, Y + 1), not busyCell(X + 1, Y + 1), not busyCell(X + 1, Y + 2), canFall(X, Y), canFall(X + 1, Y), spawnedTetromino(6, _, _, _,  _, _, _).
 
 bestPos(Y, X, 0) :- maxRot0(X, Y), maxRot90(X1, Y1), Y > Y1, spawnedTetromino(6, _, _, _,  _, _, _).
 bestPos(Y, X, 1) :- maxRot0(X1, Y1), maxRot90(X, Y), Y >= Y1, spawnedTetromino(6, _, _, _,  _, _, _).

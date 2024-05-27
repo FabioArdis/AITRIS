@@ -54,6 +54,8 @@ fall_counter = 0
 is_paused = False
 tetromino_counter = 1
 
+position = []
+
 # Loop principale
 loop = True
 renderer.add_to_log("Inizio gioco.", window)
@@ -134,6 +136,9 @@ while loop:
     renderer.render_log(window)
     renderer.render_board(window, board)
     renderer.render_game_info(window, game, tetromino_counter)
+    vision = [(position[i], position[i + 1]) for i in range(0, len(position), 2)]
+    print("ALLAH", vision)
+    renderer.render_vision(window, vision)
     renderer.render_tetromino(window, tetromino)
 
     if is_paused:

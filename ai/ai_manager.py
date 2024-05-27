@@ -5,6 +5,7 @@ from embasp.languages.asp.asp_input_program import ASPInputProgram
 
 from ai.position import AiPosition
 from ai.bestPos import AiBestPos
+from ai.validPosition import ValidPosition
 #from ai.tetromino_ia import TetrominoIa
 
 
@@ -40,6 +41,8 @@ class AiManager():
         self.asp_input_program_from_file = ASPInputProgram()
         self.asp_input_program_from_python = ASPInputProgram()
 
+        self.vision = []
+
         self.rotation = 0
 
         load_asp_program_from_file(asp_program_path, self.asp_input_program_from_file)
@@ -68,6 +71,8 @@ class AiManager():
             #print("answer set is: ", answerSet)
             get_first_answer_set = answerSet[0]
             for object in get_first_answer_set.get_atoms():
+                if isinstance(object, ValidPosition):
+                    self.vision.append((object.get_x(), object.get_y()))
                 if isinstance(object, AiBestPos):
                     # print(object.get_x())
                     # print(object.get_y())
@@ -93,3 +98,6 @@ class AiManager():
 
     def get_rotation(self):
         return self.rotation
+
+    def get_vision(self):
+        return self.vision
