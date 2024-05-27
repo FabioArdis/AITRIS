@@ -1,4 +1,4 @@
-from embasp.languages.predicate import Predicate
+from languages.predicate import Predicate
 
 
 class TetrominoIa(Predicate):

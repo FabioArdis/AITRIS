@@ -1,7 +1,7 @@
-from embasp.specializations.dlv2.desktop.dlv2_desktop_service import DLV2DesktopService
-from embasp.platforms.desktop.desktop_handler import DesktopHandler
-from embasp.languages.asp.asp_mapper import ASPMapper
-from embasp.languages.asp.asp_input_program import ASPInputProgram
+from specializations.dlv2.desktop.dlv2_desktop_service import DLV2DesktopService
+from platforms.desktop.desktop_handler import DesktopHandler
+from languages.asp.asp_mapper import ASPMapper
+from languages.asp.asp_input_program import ASPInputProgram
 
 from ai.position import AiPosition
 from ai.bestPos import AiBestPos
