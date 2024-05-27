@@ -52,7 +52,7 @@ validPosition(X, Y, 1, 0) :- cell(X, Y), cell(X + 1, Y), cell(X + 2, Y), cell(X 
 %90
 validPosition(X, Y, 1, 1) :- cell(X + 1, Y), cell(X + 1, Y + 1), cell(X + 1, Y + 2), cell(X, Y + 1), not busyCell(X + 1, Y), not busyCell(X + 1, Y + 1), not busyCell(X + 1, Y + 2), not busyCell(X, Y + 1), canFall(X, Y), canFall(X + 1, Y), spawnedTetromino(1, _, _, _,  _, _, _).
 %180
-validPosition(X, Y, 1, 2) :- cell(X, Y + 1), cell(X + 1, Y + 1), cell(X + 2, Y + 1), cell(X + 1, Y), not busyCell(X, Y + 1), not busyCell(X + 1, Y + 1), not busyCell(X + 2, Y + 1), not busyCell(X + 1, Y), canFall(X, Y), canFall(X + 1, Y), spawnedTetromino(1, _, _, _,  _, _, _).
+validPosition(X, Y, 1, 2) :- cell(X, Y + 1), cell(X + 1, Y + 1), cell(X + 2, Y + 1), cell(X + 1, Y), not busyCell(X, Y + 1), not busyCell(X + 1, Y + 1), not busyCell(X + 2, Y + 1), not busyCell(X + 1, Y), canFall(X, Y), canFall(X + 1, Y), canFall(X + 2, Y), spawnedTetromino(1, _, _, _,  _, _, _).
 %270
 validPosition(X, Y, 1, 3) :- cell(X, Y), cell(X, Y + 1), cell(X, Y + 2), cell(X + 1, Y + 1), not busyCell(X, Y), not busyCell(X, Y + 1), not busyCell(X, Y + 2), not busyCell(X + 1, Y + 1), canFall(X, Y), canFall(X + 1, Y), spawnedTetromino(1, _, _, _,  _, _, _).
 
