@@ -3,6 +3,8 @@ cell(0..9, 0..19).
 rows(0..19).
 
 ceiling(R1, R) :- rows(R1), rows(R), R1 < R.
+checkCell(X, Y) :- cell(X, Y), not busyCell(X, Y).
+ceilingNotFree(X, Y) :- ceiling(Y1, Y), busyCell(X,Y1), Y<>Y1.
 
 % type(0). % I - 0
 % type(1). % T - 1
@@ -29,17 +31,9 @@ ceiling(R1, R) :- rows(R1), rows(R), R1 < R.
 %                               ####
 
 %0
-validPosition(X, Y, 0, 0) | notValidPosition(X, Y, 0, 0) :- cell(X, Y), cell(X + 1, Y), cell(X + 2, Y), cell(X + 3, Y), not busyCell(X, Y), not busyCell(X + 1, Y), not busyCell(X + 2, Y), not busyCell(X + 3, Y), canFall(X, Y), canFall(X + 1, Y), canFall(X + 2, Y), canFall(X + 3, Y), spawnedTetromino(0, _, _, _, _), not ceilingNotFree(X, Y), not ceilingNotFree(X+1, Y), not ceilingNotFree(X+2, Y), not ceilingNotFree(X+3, Y).
+validPosition(X, Y, 0, 0) :- checkCell(X, Y), checkCell(X + 1, Y), checkCell(X + 2, Y), checkCell(X + 3, Y), not ceilingNotFree(X, Y), not ceilingNotFree(X + 1, Y), not ceilingNotFree(X + 2, Y), not ceilingNotFree(X + 3, Y), spawnedTetromino(0, _, _, _, _).
 %90
-validPosition(X, Y, 0, 1) | notValidPosition(X, Y, 0, 1) :- cell(X, Y), cell(X, Y + 1), cell(X, Y + 2), cell(X, Y + 3), not busyCell(X, Y), not busyCell(X, Y + 1), not busyCell(X, Y + 2), not busyCell(X, Y + 3), canFall(X, Y), spawnedTetromino(0, _, _, _, _), not ceilingNotFree(X, Y+3).
-
-%:- validPosition(X, Y, 0, 0), ceiling(Y1, Y), busyCell(X, Y1).
-%:- validPosition(X, Y, 0, 0), ceiling(Y1, Y), busyCell(X + 1, Y1).
-%:- validPosition(X, Y, 0, 0), ceiling(Y1, Y), busyCell(X + 2, Y1).
-%:- validPosition(X, Y, 0, 0), ceiling(Y1, Y), busyCell(X + 3, Y1).
-%
-%:- validPosition(X, Y, 0, 1), ceiling(Y1, Y), busyCell(X, Y1).
-
+validPosition(X, Y, 0, 1) :- checkCell(X, Y), checkCell(X, Y + 1), checkCell(X, Y + 2), checkCell(X, Y + 3), not ceilingNotFree(X, Y + 1), spawnedTetromino(0, _, _, _, _).
 
 bestPos(Y, X, 0) :- maxRot0(X, Y), maxRot90(X1, Y1), Y > Y1, spawnedTetromino(0, _, _, _, _).
 bestPos(Y, X, 1) :- maxRot0(X1, Y1), maxRot90(X, Y), Y >= Y1, spawnedTetromino(0, _, _, _, _).
@@ -59,41 +53,14 @@ maxRot90(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 0, 1)}, validPosition(X, Y
 %                               ####                                    ####
 %                               ####                                    ####
 
-%%0
-%validPosition(X, Y, 1, 0) | notValidPosition(X, Y, 1, 0) :- cell(X, Y), cell(X + 1, Y), cell(X + 2, Y), cell(X + 1, Y + 1), not busyCell(X, Y), not busyCell(X + 1, Y), not busyCell(X + 2, Y), not busyCell(X + 1, Y + 1), canFall(X, Y), canFall(X + 1, Y), canFall(X + 2, Y), spawnedTetromino(1, _, _, _,  _, _, _).
-%%90
-%validPosition(X, Y, 1, 1) | notValidPosition(X, Y, 1, 1) :- cell(X + 1, Y), cell(X + 1, Y + 1), cell(X + 1, Y + 2), cell(X, Y + 1), not busyCell(X + 1, Y), not busyCell(X + 1, Y + 1), not busyCell(X + 1, Y + 2), not busyCell(X, Y + 1), canFall(X, Y), canFall(X + 1, Y), spawnedTetromino(1, _, _, _,  _, _, _).
-%%180
-%validPosition(X, Y, 1, 2) | notValidPosition(X, Y, 1, 2) :- cell(X, Y + 1), cell(X + 1, Y + 1), cell(X + 2, Y + 1), cell(X + 1, Y), not busyCell(X, Y + 1), not busyCell(X + 1, Y + 1), not busyCell(X + 2, Y + 1), not busyCell(X + 1, Y), canFall(X, Y), canFall(X + 1, Y), spawnedTetromino(1, _, _, _,  _, _, _).
-%%270
-%validPosition(X, Y, 1, 3) | notValidPosition(X, Y, 1, 3) :- cell(X, Y), cell(X, Y + 1), cell(X, Y + 2), cell(X + 1, Y + 1), not busyCell(X, Y), not busyCell(X, Y + 1), not busyCell(X, Y + 2), not busyCell(X + 1, Y + 1), canFall(X, Y), canFall(X + 1, Y), canFall(X + 2, Y), spawnedTetromino(1, _, _, _,  _, _, _).
-
-checkCell(X, Y) :- cell(X, Y), not busyCell(X, Y).
-
-ceilingNotFree(X, Y) :- ceiling(Y1, Y), busyCell(X,Y1), Y<>Y1.
-
 %0
-validPosition(X, Y, 1, 0)  :- checkCell(X, Y), checkCell(X + 1, Y), checkCell(X + 2, Y), checkCell(X + 1, Y + 1), not ceilingNotFree(X, Y+1),  not ceilingNotFree(X + 1, Y+1), not ceilingNotFree(X + 2, Y+1),spawnedTetromino(1, _, _, _,  _, _, _). %, not busyCell(X, Y), not busyCell(X + 1, Y), not busyCell(X + 2, Y), not busyCell(X + 1, Y + 1), canFall(X, Y), canFall(X + 1, Y), canFall(X + 2, Y), spawnedTetromino(1, _, _, _,  _, _, _).
+validPosition(X, Y, 1, 0) :- checkCell(X, Y), checkCell(X + 1, Y), checkCell(X + 2, Y), checkCell(X + 1, Y + 1),         not ceilingNotFree(X, Y + 1),  not ceilingNotFree(X + 1, Y + 1), not ceilingNotFree(X + 2, Y + 1), spawnedTetromino(1, _, _, _,  _, _, _).
 %90
-validPosition(X, Y, 1, 1)  :- checkCell(X + 1, Y), checkCell(X + 1, Y + 1), checkCell(X + 1, Y + 2), not ceilingNotFree(X, Y+1),  not ceilingNotFree(X + 1, Y+1),checkCell(X, Y + 1), spawnedTetromino(1, _, _, _,  _, _, _). %not busyCell(X + 1, Y), not busyCell(X + 1, Y + 1), not busyCell(X + 1, Y + 2), not busyCell(X, Y + 1), canFall(X, Y), canFall(X + 1, Y), spawnedTetromino(1, _, _, _,  _, _, _).
+validPosition(X, Y, 1, 1) :- checkCell(X + 1, Y), checkCell(X + 1, Y + 1), checkCell(X + 1, Y + 2), checkCell(X, Y + 1), not ceilingNotFree(X, Y + 1),  not ceilingNotFree(X + 1, Y + 1), spawnedTetromino(1, _, _, _,  _, _, _).
 %180
-validPosition(X, Y, 1, 2)  :- checkCell(X, Y + 1), checkCell(X + 1, Y + 1), checkCell(X + 2, Y + 1), not ceilingNotFree(X, Y+1), not ceilingNotFree(X+1, Y+1), not ceilingNotFree(X+2, Y+1), checkCell(X + 1, Y), spawnedTetromino(1, _, _, _,  _, _, _). % not busyCell(X, Y + 1), not busyCell(X + 1, Y + 1), not busyCell(X + 2, Y + 1), not busyCell(X + 1, Y), canFall(X, Y), canFall(X + 1, Y), spawnedTetromino(1, _, _, _,  _, _, _).
+validPosition(X, Y, 1, 2) :- checkCell(X, Y + 1), checkCell(X + 1, Y + 1), checkCell(X + 2, Y + 1), checkCell(X + 1, Y), not ceilingNotFree(X, Y + 1), not ceilingNotFree(X + 1, Y + 1), not ceilingNotFree(X + 2, Y + 1), spawnedTetromino(1, _, _, _,  _, _, _).
 %270
-validPosition(X, Y, 1, 3)  :- checkCell(X, Y), checkCell(X, Y + 1), checkCell(X, Y + 2), checkCell(X + 1, Y + 1), not ceilingNotFree(X, Y+1), not ceilingNotFree(X+1, Y+1), spawnedTetromino(1, _, _, _,  _, _, _).%, not busyCell(X, Y), not busyCell(X, Y + 1), not busyCell(X, Y + 2), not busyCell(X + 1, Y + 1), canFall(X, Y), canFall(X + 1, Y), canFall(X + 2, Y), spawnedTetromino(1, _, _, _,  _, _, _).
-
-%:- validPosition(X, Y, 1, 0), ceiling(Y1, Y), busyCell(X, Y1).
-%:- validPosition(X, Y, 1, 0), ceiling(Y1, Y), busyCell(X + 1, Y1).
-%:- validPosition(X, Y, 1, 0), ceiling(Y1, Y), busyCell(X + 2, Y1).
-%
-%:- validPosition(X, Y, 1, 1), ceiling(Y1, Y), busyCell(X, Y1).
-%:- validPosition(X, Y, 1, 1), ceiling(Y1, Y), busyCell(X + 1, Y1).
-%
-%:- validPosition(X, Y, 1, 2), ceiling(Y1, Y), busyCell(X, Y1).
-%:- validPosition(X, Y, 1, 2), ceiling(Y1, Y), busyCell(X + 1, Y1).
-%:- validPosition(X, Y, 1, 2), ceiling(Y1, Y), busyCell(X + 2, Y1).
-%
-%:- validPosition(X, Y, 1, 3), ceiling(Y1, Y), busyCell(X, Y1).
-%:- validPosition(X, Y, 1, 3), ceiling(Y1, Y), busyCell(X + 1, Y1).
+validPosition(X, Y, 1, 3) :- checkCell(X, Y), checkCell(X, Y + 1), checkCell(X, Y + 2), checkCell(X + 1, Y + 1),         not ceilingNotFree(X, Y + 1), not ceilingNotFree(X + 1, Y + 1), spawnedTetromino(1, _, _, _,  _, _, _).
 
 bestPos(Y, X, 0) :- maxRot0(X, Y), maxRot90(X1, Y1), maxRot180(X2, Y2), maxRot270(X3, Y3), Y > Y1, Y > Y2, Y > Y3, spawnedTetromino(1, _, _, _,  _, _, _).
 bestPos(Y, X, 1) :- maxRot0(X1, Y1), maxRot90(X, Y), maxRot180(X3, Y3), maxRot270(X2, Y2), Y >= Y1, Y >= Y2, Y >= Y3, spawnedTetromino(1, _, _, _,  _, _, _).
@@ -118,32 +85,17 @@ maxRot270(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 1, 3)}, validPosition(X, 
 %                               ####                                    ########
 
 %0
-validPosition(X, Y, 2, 0) :- cell(X, Y), cell(X + 1, Y), cell(X + 2, Y), cell(X, Y + 1), not busyCell(X, Y), not busyCell(X + 1, Y), not busyCell(X + 2, Y), not busyCell(X, Y + 1), canFall(X, Y), canFall(X + 1, Y), canFall(X + 2, Y), spawnedTetromino(2, _, _, _,  _, _, _), not ceilingNotFree(X, Y+1), not ceilingNotFree(X+1, Y+1), not ceilingNotFree(X+2, Y+1).
+validPosition(X, Y, 2, 0) :- checkCell(X, Y), checkCell(X + 1, Y), checkCell(X + 2, Y), checkCell(X, Y + 1),             not ceilingNotFree(X, Y + 1), not ceilingNotFree(X + 1, Y + 1), not ceilingNotFree(X + 2, Y + 1), spawnedTetromino(2, _, _, _,  _, _, _).
 %90
-validPosition(X, Y, 2, 1) :- cell(X, Y), cell(X + 1, Y), cell(X + 1, Y + 1), cell(X + 1, Y + 2), not busyCell(X, Y), not busyCell(X + 1, Y), not busyCell(X + 1, Y + 1), not busyCell(X + 1, Y + 2), canFall(X, Y), canFall(X + 1, Y), spawnedTetromino(2, _, _, _,  _, _, _), not ceilingNotFree(X, Y+1), not ceilingNotFree(X+1, Y+1).
+validPosition(X, Y, 2, 1) :- checkCell(X, Y), checkCell(X + 1, Y), checkCell(X + 1, Y + 1), checkCell(X + 1, Y + 2),     not ceilingNotFree(X, Y + 1), not ceilingNotFree(X + 1, Y + 1), spawnedTetromino(2, _, _, _,  _, _, _).
 %180
-validPosition(X, Y, 2, 2) :- cell(X, Y + 1), cell(X + 1, Y + 1), cell(X + 2, Y + 1), cell(X + 2, Y), not busyCell(X, Y + 1), not busyCell(X + 1, Y + 1), not busyCell(X + 2, Y + 1), not busyCell(X + 2, Y), canFall(X, Y), canFall(X + 1, Y), canFall(X + 2, Y), spawnedTetromino(2, _, _, _,  _, _, _), not ceilingNotFree(X, Y+1), not ceilingNotFree(X+1, Y+1), not ceilingNotFree(X+2, Y+1).
+validPosition(X, Y, 2, 2) :- checkCell(X, Y + 1), checkCell(X + 1, Y + 1), checkCell(X + 2, Y + 1), checkCell(X + 2, Y), not ceilingNotFree(X, Y + 1), not ceilingNotFree(X + 1, Y + 1), not ceilingNotFree(X + 2, Y + 1), spawnedTetromino(2, _, _, _,  _, _, _).
 %270
-validPosition(X, Y, 2, 3) :- cell(X, Y), cell(X, Y + 1), cell(X, Y + 2), cell(X + 1, Y + 2), not busyCell(X, Y), not busyCell(X, Y + 1), not busyCell(X, Y + 2), not busyCell(X + 1, Y + 2), canFall(X, Y), canFall(X + 1, Y), spawnedTetromino(2, _, _, _,  _, _, _), not ceilingNotFree(X, Y+1), not ceilingNotFree(X+1, Y+1).
-
-%:- validPosition(X, Y, 2, 0), ceiling(Y1, Y), busyCell(X, Y1).
-%:- validPosition(X, Y, 2, 0), ceiling(Y1, Y), busyCell(X + 1, Y1).
-%:- validPosition(X, Y, 2, 0), ceiling(Y1, Y), busyCell(X + 2, Y1).
-%
-%:- validPosition(X, Y, 2, 1), ceiling(Y1, Y), busyCell(X, Y1).
-%:- validPosition(X, Y, 2, 1), ceiling(Y1, Y), busyCell(X + 1, Y1).
-%
-%:- validPosition(X, Y, 2, 2), ceiling(Y1, Y), busyCell(X, Y1).
-%:- validPosition(X, Y, 2, 2), ceiling(Y1, Y), busyCell(X + 1, Y1).
-%:- validPosition(X, Y, 2, 2), ceiling(Y1, Y), busyCell(X + 2, Y1).
-%
-%:- validPosition(X, Y, 2, 3), ceiling(Y1, Y), busyCell(X, Y1).
-%:- validPosition(X, Y, 2, 3), ceiling(Y1, Y), busyCell(X + 1, Y1).
+validPosition(X, Y, 2, 3) :- checkCell(X, Y), checkCell(X, Y + 1), checkCell(X, Y + 2), checkCell(X + 1, Y + 2),         not ceilingNotFree(X, Y + 1), not ceilingNotFree(X + 1, Y + 1), spawnedTetromino(2, _, _, _,  _, _, _).
 
 bestPos(Y, X, 0) :- maxRot0(X, Y), maxRot90(X1, Y1), maxRot180(X2, Y2), maxRot270(X3, Y3), Y > Y1, Y > Y2, Y > Y3, spawnedTetromino(2, _, _, _,  _, _, _).
 bestPos(Y, X, 1) :- maxRot0(X1, Y1), maxRot90(X, Y), maxRot180(X3, Y3), maxRot270(X2, Y2), Y >= Y1, Y > Y2, Y > Y3, spawnedTetromino(2, _, _, _,  _, _, _).
 bestPos(Y, X, 2) :- maxRot0(X1, Y1), maxRot90(X2, Y2), maxRot180(X, Y), maxRot270(X3, Y3), Y >= Y1, Y >= Y2, Y > Y3, spawnedTetromino(2, _, _, _,  _, _, _).
-% aggiungi l'uguale a y >y3
 bestPos(Y, X, 3) :- maxRot0(X1, Y1), maxRot90(X2, Y2), maxRot180(X3, Y3), maxRot270(X, Y), Y >= Y1, Y >= Y2, Y >= Y3, spawnedTetromino(2, _, _, _,  _, _, _).
 
 maxRot0(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 2, 0)}, validPosition(X, Y, 2, 0).
@@ -164,27 +116,13 @@ maxRot270(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 2, 3)}, validPosition(X, 
 %                           ########                                    ####
 
 %0
-validPosition(X, Y, 3, 0) :- cell(X, Y), cell(X + 1, Y), cell(X + 2, Y), cell(X + 2, Y + 1), not busyCell(X, Y), not busyCell(X + 1, Y), not busyCell(X + 2, Y), not busyCell(X + 2, Y + 1), canFall(X, Y), canFall(X + 1, Y), canFall(X + 2, Y), spawnedTetromino(3, _, _, _,  _, _, _), not ceilingNotFree(X, Y+1), not ceilingNotFree(X+1, Y+1), not ceilingNotFree(X+2, Y+1).
+validPosition(X, Y, 3, 0) :- checkCell(X, Y), checkCell(X + 1, Y), checkCell(X + 2, Y), checkCell(X + 2, Y + 1),         not ceilingNotFree(X, Y + 1), not ceilingNotFree(X + 1, Y + 1), not ceilingNotFree(X + 2, Y + 1), spawnedTetromino(3, _, _, _,  _, _, _).
 %90
-validPosition(X, Y, 3, 1) :- cell(X + 1, Y), cell(X + 1, Y + 1), cell(X + 1, Y + 2), cell(X, Y + 2), not busyCell(X + 1, Y), not busyCell(X + 1, Y + 1), not busyCell(X + 1, Y + 2), not busyCell(X, Y + 2), canFall(X, Y), canFall(X + 1, Y), spawnedTetromino(3, _, _, _,  _, _, _), not ceilingNotFree(X, Y+1), not ceilingNotFree(X+1, Y+1).
+validPosition(X, Y, 3, 1) :- checkCell(X + 1, Y), checkCell(X + 1, Y + 1), checkCell(X + 1, Y + 2), checkCell(X, Y + 2), not ceilingNotFree(X, Y + 1), not ceilingNotFree(X + 1, Y + 1),  spawnedTetromino(3, _, _, _,  _, _, _).
 %180
-validPosition(X, Y, 3, 2) :- cell(X, Y), cell(X, Y + 1), cell(X + 1, Y + 1), cell(X + 2, Y + 1), not busyCell(X, Y), not busyCell(X, Y + 1), not busyCell(X + 1, Y + 1), not busyCell(X + 2, Y + 1), canFall(X, Y), canFall(X + 1, Y), canFall(X + 2, Y), spawnedTetromino(3, _, _, _,  _, _, _), not ceilingNotFree(X, Y+1), not ceilingNotFree(X+1, Y+1), not ceilingNotFree(X+2, Y+1).
+validPosition(X, Y, 3, 2) :- checkCell(X, Y), checkCell(X, Y + 1), checkCell(X + 1, Y + 1), checkCell(X + 2, Y + 1),     not ceilingNotFree(X, Y + 1), not ceilingNotFree(X + 1, Y + 1), not ceilingNotFree(X + 2, Y + 1), spawnedTetromino(3, _, _, _,  _, _, _).
 %270
-validPosition(X, Y, 3, 3) :- cell(X, Y), cell(X + 1, Y), cell(X, Y + 1), cell(X, Y + 2), not busyCell(X, Y), not busyCell(X + 1, Y), not busyCell(X, Y + 1), not busyCell(X, Y + 2), canFall(X, Y), canFall(X + 1, Y), spawnedTetromino(3, _, _, _,  _, _, _), not ceilingNotFree(X, Y+1), not ceilingNotFree(X+1, Y+1).
-
-%:- validPosition(X, Y, 3, 0), ceiling(Y1, Y), busyCell(X, Y1).
-%:- validPosition(X, Y, 3, 0), ceiling(Y1, Y), busyCell(X + 1, Y1).
-%:- validPosition(X, Y, 3, 0), ceiling(Y1, Y), busyCell(X + 2, Y1).
-%
-%:- validPosition(X, Y, 3, 1), ceiling(Y1, Y), busyCell(X, Y1).
-%:- validPosition(X, Y, 3, 1), ceiling(Y1, Y), busyCell(X + 1, Y1).
-%
-%:- validPosition(X, Y, 3, 2), ceiling(Y1, Y), busyCell(X, Y1).
-%:- validPosition(X, Y, 3, 2), ceiling(Y1, Y), busyCell(X + 1, Y1).
-%:- validPosition(X, Y, 3, 2), ceiling(Y1, Y), busyCell(X + 2, Y1).
-%
-%:- validPosition(X, Y, 3, 3), ceiling(Y1, Y), busyCell(X, Y1).
-%:- validPosition(X, Y, 3, 3), ceiling(Y1, Y), busyCell(X + 1, Y1).
+validPosition(X, Y, 3, 3) :- checkCell(X, Y), checkCell(X + 1, Y), checkCell(X, Y + 1), checkCell(X, Y + 2),             not ceilingNotFree(X, Y + 1), not ceilingNotFree(X + 1, Y + 1), spawnedTetromino(3, _, _, _,  _, _, _).
 
 bestPos(Y, X, 0)  :- maxRot0(X, Y), maxRot90(X1, Y1), maxRot180(X2, Y2), maxRot270(X3, Y3), Y > Y1, Y > Y2, Y > Y3, spawnedTetromino(3, _, _, _,  _, _, _).
 bestPos(Y, X, 1)  :- maxRot0(X1, Y1), maxRot90(X, Y), maxRot180(X3, Y3), maxRot270(X2, Y2), Y >= Y1, Y >= Y2, Y > Y3, spawnedTetromino(3, _, _, _,  _, _, _).
@@ -207,10 +145,7 @@ maxRot270(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 3, 3)}, validPosition(X, 
 %   ########
 
 %0
-validPosition(X, Y, 4, 0) :- cell(X, Y), cell(X + 1, Y), cell(X, Y + 1), cell(X + 1, Y + 1), not busyCell(X, Y), not busyCell(X + 1, Y), not busyCell(X, Y + 1), not busyCell(X + 1, Y + 1), canFall(X, Y), canFall(X + 1, Y), spawnedTetromino(4, _, _, _, _), not ceilingNotFree(X, Y+1), not ceilingNotFree(X+1, Y+1).
-
-%:- validPosition(X, Y, 5, 0), ceiling(Y1, Y), busyCell(X, Y1).
-%:- validPosition(X, Y, 5, 0), ceiling(Y1, Y), busyCell(X + 1, Y1).
+validPosition(X, Y, 4, 0) :- checkCell(X, Y), checkCell(X + 1, Y), checkCell(X, Y + 1), checkCell(X + 1, Y + 1), not ceilingNotFree(X, Y+1), not ceilingNotFree(X+1, Y+1), spawnedTetromino(4, _, _, _, _).
 
 bestPos(Y, X, 0) :- Y = #max{ Y1 : validPosition(_, Y1, 4, 0)}, validPosition(X, Y, 4, 0), spawnedTetromino(4, _, _, _, _).
 
@@ -228,19 +163,12 @@ bestPos(Y, X, 0) :- Y = #max{ Y1 : validPosition(_, Y1, 4, 0)}, validPosition(X,
 
 
 %0
-validPosition(X, Y, 5, 0) :- cell(X, Y), cell(X + 1, Y), cell(X + 1, Y + 1), cell(X + 2, Y + 1), not busyCell(X, Y), not busyCell(X + 1, Y), not busyCell(X + 1, Y + 1), not busyCell(X + 2, Y + 1), canFall(X, Y), canFall(X + 1, Y), canFall(X + 2, Y), spawnedTetromino(5, _, _, _,  _, _, _), not ceilingNotFree(X, Y+1), not ceilingNotFree(X+1, Y+1), not ceilingNotFree(X+2, Y+1).
+validPosition(X, Y, 5, 0) :- checkCell(X, Y), checkCell(X + 1, Y), checkCell(X + 1, Y + 1), checkCell(X + 2, Y + 1), not ceilingNotFree(X, Y + 1), not ceilingNotFree(X + 1, Y + 1), not ceilingNotFree(X + 2, Y + 1), spawnedTetromino(5, _, _, _,  _, _, _).
 %90
-validPosition(X, Y, 5, 1) :- cell(X + 1, Y), cell(X, Y + 1), cell(X + 1, Y + 1), cell(X, Y + 2), not busyCell(X, Y), not busyCell(X, Y + 1), not busyCell(X + 1, Y + 1), not busyCell(X, Y + 2), canFall(X, Y), canFall(X + 1, Y), spawnedTetromino(5, _, _, _,  _, _, _), not ceilingNotFree(X, Y+1), not ceilingNotFree(X+1, Y+1).
+validPosition(X, Y, 5, 1) :- checkCell(X + 1, Y), checkCell(X, Y + 1), checkCell(X + 1, Y + 1), checkCell(X, Y + 2), not ceilingNotFree(X, Y + 1), not ceilingNotFree(X + 1, Y + 1), spawnedTetromino(5, _, _, _,  _, _, _).
 
-%:- validPosition(X, Y, 5, 0), ceiling(Y1, Y), busyCell(X, Y1).
-%:- validPosition(X, Y, 5, 0), ceiling(Y1, Y), busyCell(X + 1, Y1).
-%:- validPosition(X, Y, 5, 0), ceiling(Y1, Y), busyCell(X + 2, Y1).
-%
-%:- validPosition(X, Y, 5, 1), ceiling(Y1, Y), busyCell(X, Y1).
-%:- validPosition(X, Y, 5, 1), ceiling(Y1, Y), busyCell(X + 1, Y1).
-
-bestPos(Y, X, 0) :- maxRot0(X, Y), maxRot90(X1, Y1), Y > Y1, spawnedTetromino(5, _, _, _,  _, _, _).
-bestPos(Y, X, 1) :- maxRot0(X1, Y1), maxRot90(X, Y), Y >= Y1, spawnedTetromino(5, _, _, _,  _, _, _).
+bestPos(Y, X, 0) :- maxRot0(X, Y), maxRot90(X1, Y1), Y >= Y1, spawnedTetromino(5, _, _, _,  _, _, _).
+bestPos(Y, X, 1) :- maxRot0(X1, Y1), maxRot90(X, Y), Y > Y1, spawnedTetromino(5, _, _, _,  _, _, _).
 
 maxRot0(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 5, 0)}, validPosition(X, Y, 5, 0).
 maxRot90(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 5, 1)}, validPosition(X, Y, 5, 1).
@@ -259,27 +187,12 @@ maxRot90(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 5, 1)}, validPosition(X, Y
 
 
 %0
-validPosition(X, Y, 6, 0) :- cell(X + 1, Y), cell(X + 2, Y), cell(X, Y + 1), cell(X + 1, Y + 1), not busyCell(X + 1, Y), not busyCell(X + 2, Y), not busyCell(X, Y + 1), not busyCell(X + 1, Y + 1), canFall(X, Y), canFall(X + 1, Y), canFall(X + 2, Y), spawnedTetromino(6, _, _, _,  _, _, _), not ceilingNotFree(X, Y+1), not ceilingNotFree(X+1, Y+1), not ceilingNotFree(X+2, Y+1).
+validPosition(X, Y, 6, 0) :- checkCell(X + 1, Y), checkCell(X + 2, Y), checkCell(X, Y + 1), checkCell(X + 1, Y + 1), not ceilingNotFree(X, Y + 1), not ceilingNotFree(X + 1, Y + 1), not ceilingNotFree(X + 2, Y + 1), spawnedTetromino(6, _, _, _,  _, _, _).
 %90
-validPosition(X, Y, 6, 1) :- cell(X, Y), cell(X, Y + 1), cell(X + 1, Y + 1), cell(X + 1, Y + 2), not busyCell(X, Y), not busyCell(X, Y + 1), not busyCell(X + 1, Y + 1), not busyCell(X + 1, Y + 2), canFall(X, Y), canFall(X + 1, Y), spawnedTetromino(6, _, _, _,  _, _, _), not ceilingNotFree(X, Y+1), not ceilingNotFree(X+1, Y+1).
+validPosition(X, Y, 6, 1) :- checkCell(X, Y), checkCell(X, Y + 1), checkCell(X + 1, Y + 1), checkCell(X + 1, Y + 2), not ceilingNotFree(X, Y + 1), not ceilingNotFree(X + 1, Y + 1), spawnedTetromino(6, _, _, _,  _, _, _).
 
-%:- validPosition(X, Y, 6, 0), ceiling(Y1, Y), busyCell(X, Y1).
-%:- validPosition(X, Y, 6, 0), ceiling(Y1, Y), busyCell(X + 1, Y1).
-%:- validPosition(X, Y, 6, 0), ceiling(Y1, Y), busyCell(X + 2, Y1).
-%
-%:- validPosition(X, Y, 6, 1), ceiling(Y1, Y), busyCell(X, Y1).
-%:- validPosition(X, Y, 6, 1), ceiling(Y1, Y), busyCell(X + 1, Y1).
-
-bestPos(Y, X, 0) :- maxRot0(X, Y), maxRot90(X1, Y1), Y > Y1, spawnedTetromino(6, _, _, _,  _, _, _).
-bestPos(Y, X, 1) :- maxRot0(X1, Y1), maxRot90(X, Y), Y >= Y1, spawnedTetromino(6, _, _, _,  _, _, _).
+bestPos(Y, X, 0) :- maxRot0(X, Y), maxRot90(X1, Y1), Y >= Y1, spawnedTetromino(6, _, _, _,  _, _, _).
+bestPos(Y, X, 1) :- maxRot0(X1, Y1), maxRot90(X, Y), Y > Y1, spawnedTetromino(6, _, _, _,  _, _, _).
 
 maxRot0(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 6, 0)}, validPosition(X, Y, 6, 0).
 maxRot90(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 6, 1)}, validPosition(X, Y, 6, 1).
-
-% check if every cell above is not busy (the tetromino can fall in place)
-canFall(X, Y) :- cell(X, Y), not busyCell(X, Y).
-%canFall(X, Y) :- Y > 0, cell(X, Y), canFall(X, Y - 1), not busyCell(X, Y).
-
-%rows(0..19).
-%ceilingColumn(Ystart, Y) :- rows(Ystart), rows(Y), Ystart < Y.
-%canFall(X, Y) :- ceilingColumn(Y1, Y), cell(X, Y), not busyCell(X, Y).
