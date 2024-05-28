@@ -49,7 +49,7 @@ input_handler = Input()
 ai_manager = AiManager("./executables/dlv2", "./ai/tetris_ai.asp")
 
 # Contatori di sistema per il flow del gioco
-fall_speed = 5
+fall_speed = 1
 fall_counter = 0
 is_paused = False
 tetromino_counter = 1
