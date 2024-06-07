@@ -3,13 +3,13 @@ import random
 
 class Tetromino:
     SHAPES = [
-        [[1, 1, 1, 1]],  # I - 0
+#        [[1, 1, 1, 1]],  # I - 0
         [[1, 1, 1], [0, 1, 0]],  # T - 1
-        [[1, 1, 1], [1, 0, 0]],  # L - 2
-        [[1, 1, 1], [0, 0, 1]],  # J - 3
-        [[1, 1], [1, 1]],  # Cubo - 4
-        [[1, 1, 0], [0, 1, 1]],  # Z - 5
-        [[0, 1, 1], [1, 1, 0]],  # S - 6
+#        [[1, 1, 1], [1, 0, 0]],  # L - 2
+#        [[1, 1, 1], [0, 0, 1]],  # J - 3
+#        [[1, 1], [1, 1]],  # Cubo - 4
+#        [[1, 1, 0], [0, 1, 1]],  # Z - 5
+#        [[0, 1, 1], [1, 1, 0]],  # S - 6
     ]
 
     COLORS = [
@@ -24,7 +24,7 @@ class Tetromino:
 
     def __init__(self):
         # Randomizziamo forma e colore, mentre la posizione è al centro.
-        self.type = random.randint(0, 6)
+        self.type = random.randint(0, 0)
         self.shape = self.SHAPES[self.type]
         self.color = random.choice(self.COLORS)
         self.position = [0, 0]
