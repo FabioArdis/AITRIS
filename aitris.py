@@ -54,6 +54,8 @@ fall_counter = 0
 is_paused = False
 tetromino_counter = 1
 
+position = []
+
 # Loop principale
 loop = True
 renderer.add_to_log("Inizio gioco.", window)
@@ -107,7 +109,7 @@ while loop:
             #ai_manager.add_position(tetromino.position[0], tetromino.position[1])
 
             print("get_shape is", tetromino.get_shape())
-            ai_manager.add_tetromino(tetromino.get_shape())
+            ai_manager.add_tetromino(tetromino.get_type(), tetromino.get_shape())
             ai_manager.add_busy_cells(board.get_list_of_busy_cells())
 
             position = ai_manager.get_BEST_position()
@@ -118,17 +120,11 @@ while loop:
                 print("position[0] is: ", position[0])
                 print("position[1] is: ", position[1])
 
-                # Rotate the number of times calculated by .asp
-                for a in range(int(ai_manager.get_times())):
+                for n in range(int(ai_manager.get_rotation())):
                     tetromino.rotate(board)
-                # QUESTO METODO NON VA BENE. Prova ad immaginare il caso in cui:
-                # 1) la board NON si aggiorna in tempo,
-                # 2) intanto il tetromino va molteplici volte a destra,
-                # 3) a destra del tetromino (proprio dove sta andando) c'è una serie di blocchi già posti.
-                # Risultato? Il tetromino "entra" dentro il blocco, in alcuni casi disegnando anche all'interno del blocco (occupando i buchi)
-                # Possibile soluzione: fare il controllo _bene_ sulle collisioni in asp non dovrebbe rendere questo scenario possibile(?)
-                tetromino.position[0] = int(position[0])
+
                 tetromino.position[1] = int(position[1])
+
             ###
             # FINE CODICE AI
             ###
@@ -141,6 +137,9 @@ while loop:
     renderer.render_log(window)
     renderer.render_board(window, board)
     renderer.render_game_info(window, game, tetromino_counter)
+    vision = [(position[i], position[i + 1]) for i in range(0, len(position), 2)]
+    print("ALLAH", vision)
+    renderer.render_vision(window, vision)
     renderer.render_tetromino(window, tetromino)
 
     if is_paused:

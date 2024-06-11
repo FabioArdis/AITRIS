@@ -111,3 +111,12 @@ class Renderer:
     def render_pause(self, window):
         text_surface = self.font.render("PAUSA", True, self.RED)
         window.blit(text_surface, (400, 100))
+
+    def render_vision(self, window, vision):
+        block_size = 30
+        color = (139, 29, 38)
+
+        for index, coord in enumerate(vision):
+            x = int(coord[0])
+            y = int(coord[1])
+            pygame.draw.rect(window, color, (y * block_size, x * block_size, block_size, block_size))
