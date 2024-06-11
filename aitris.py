@@ -137,7 +137,7 @@ while loop:
     renderer.render_board(window, board)
     renderer.render_game_info(window, game, tetromino_counter)
     vision = [(position[i], position[i + 1]) for i in range(0, len(position), 2)]
-    print("ALLAH", vision)
+    print("Ai Vision: ", vision)
     renderer.render_vision(window, vision)
     renderer.render_tetromino(window, tetromino)
 
