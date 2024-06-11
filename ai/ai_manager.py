@@ -43,6 +43,7 @@ class AiManager():
 
         self.rotation = 0
 
+
         load_asp_program_from_file(asp_program_path, self.asp_input_program_from_file)
         self.handler.add_program(self.asp_input_program_from_file)
 
@@ -90,6 +91,7 @@ class AiManager():
         for coordinate in list_of_busy_cells:
             self.asp_input_program_from_python.add_program("busyCell(" + str(coordinate[1]) + ", " + str(coordinate[0]) + ").")
         self.handler.add_program(self.asp_input_program_from_python)
+
 
     def get_rotation(self):
         return self.rotation
