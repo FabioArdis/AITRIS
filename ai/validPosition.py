@@ -1,4 +1,4 @@
-from embasp.languages.predicate import Predicate
+from languages.predicate import Predicate
 
 
 # Find Best Position (work in progress)

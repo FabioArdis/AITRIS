@@ -106,13 +106,11 @@ while loop:
             # INIZIO CODICE AI
             ###
             renderer.add_to_log("Inizio AI", window)
-            #ai_manager.add_position(tetromino.position[0], tetromino.position[1])
 
-            print("get_shape is", tetromino.get_shape())
-            ai_manager.add_tetromino(tetromino.get_type(), tetromino.get_shape())
+            ai_manager.add_tetromino(tetromino.get_type())
             ai_manager.add_busy_cells(board.get_list_of_busy_cells())
 
-            position = ai_manager.get_BEST_position()
+            position = ai_manager.get_Best_position()
 
             # controlliamo che position non sia vuota
             if len(position) != 0:
@@ -138,7 +136,7 @@ while loop:
     renderer.render_board(window, board)
     renderer.render_game_info(window, game, tetromino_counter)
     vision = [(position[i], position[i + 1]) for i in range(0, len(position), 2)]
-    print("ALLAH", vision)
+    print("Ai Vision: ", vision)
     renderer.render_vision(window, vision)
     renderer.render_tetromino(window, tetromino)
 
