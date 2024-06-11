@@ -113,6 +113,7 @@ while loop:
             ai_manager.add_busy_cells(board.get_list_of_busy_cells())
 
             position = ai_manager.get_BEST_position()
+
             # controlliamo che position non sia vuota
             if len(position) != 0:
                 renderer.add_to_log(f"Row decided by AI: {position[0]} --- Col decided by AI: {position[1]}", window)
