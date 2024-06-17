@@ -114,9 +114,7 @@ while loop:
 
             # controlliamo che position non sia vuota
             if len(position) != 0:
-                renderer.add_to_log(f"Row decided by AI: {position[0]} --- Col decided by AI: {position[1]}", window)
-                print("position[0] is: ", position[0])
-                print("position[1] is: ", position[1])
+                renderer.add_to_log(f"Riga decisa dalla AI: {position[0]} --- Colonna decisa dalla AI: {position[1]}", window)
 
                 for n in range(int(ai_manager.get_rotation())):
                     tetromino.rotate(board)
