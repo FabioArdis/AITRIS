@@ -77,6 +77,8 @@ class AiManager():
 
                     self.rotation = object.get_rotation()
 
+        # print("list: ", list_aiPosition)
+
         return list_aiPosition
 
     def add_tetromino(self, type):
