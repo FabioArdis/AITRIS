@@ -1,11 +1,11 @@
 """
 ######################################################################################
-##  Nome:           AITRIS                                                          ##
-##  Descrizione:    Gioco sui tetramini, adotta EmbASP.                             ##
-##  Autore/i:       Fabio Ardis, Francesco Dattilo                                  ##
-##  Data creazione: 25/04/2024                                                      ##
-##  Note:           Se trovate qualcosa di non commentato, vuol dire che è          ##
-##                  autoesplicativo. In caso di problemi o domande, chiedete pure.  ##
+##  Name:           AITRIS                                                          ##
+##  Description:    Tetromino-based puzzle video game powered by the EmbASP tech.   ##
+##  Authors:        Fabio Ardis, Francesco Dattilo                                  ##
+##  Creation date:  25/04/2024                                                      ##
+##  Notes:          The code is mostly self documented, but if you got any          ##
+##                  questions, feel free to contact the authors.                    ##
 ######################################################################################
 """
 
@@ -20,18 +20,18 @@ from ai.ai_manager import AiManager
 
 preLogs = ["####### PRELOGS #######"]
 
-# Inizializziamo PyGame
+# Initialiaze PyGame
 pygame.init()
-preLogs.append("PyGame inizializzato.")
+preLogs.append("PyGame initialized.")
 
-# Dimensioni finestra W x H
+# Game window size W x H
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 600
 
 # Setup standard finestra
 window = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 pygame.display.set_caption('AITRIS - Powered by EmbASP')
-preLogs.append("Finestra inizializzata.")
+preLogs.append("Window initialized.")
 
 # Istanziamo le classi del gioco
 game = Game()
@@ -41,14 +41,14 @@ renderer = Renderer()
 
 for message in preLogs:
     renderer.add_to_log(message, window)
-renderer.add_to_log("####### INIZIO LOG #######", window)
+renderer.add_to_log("####### LOG START #######", window)
 
 input_handler = Input()
 
-# Istanziamo la classe per la IA
+# Instantiating the AI class
 ai_manager = AiManager("./executables/dlv2", "./ai/tetris_ai.asp")
 
-# Contatori di sistema per il flow del gioco
+# Gameplay flow variables
 fall_speed = 1
 fall_counter = 0
 is_paused = False
@@ -56,21 +56,21 @@ tetromino_counter = 1
 
 position = []
 
-# Loop principale
+# Main Loop
 loop = True
-renderer.add_to_log("Inizio gioco.", window)
+renderer.add_to_log("Start game.", window)
 while loop:
-    # Controlla se abbiamo premuto un tasto o chiuso la finestra
+    # Check if you pressed a button or closed the window
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             loop = False
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_p:  # Premi 'P' per mettere in pausa
+            if event.key == pygame.K_p:  # Press 'P' to pause the game
                 is_paused = not is_paused
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 4:  # Rotella del mouse verso l'alto
+            if event.button == 4:  # Scroll mouse wheel up, for log
                 renderer.scroll_log('up', window)
-            elif event.button == 5:  # Rotella del mouse verso il basso
+            elif event.button == 5:  # Scroll mouse wheel down, for log
                 renderer.scroll_log('down', window)
         input_handler.handle_event(event, tetromino, board)
 
@@ -78,41 +78,40 @@ while loop:
         fall_counter += 1
 
     if fall_counter >= fall_speed:
-        # Necessario manipolare direttamente la posizione. Non è molto elegante, ma meglio che scrivere un'altra
-        # funzione quasi identica all'altra.
+        # Not an elegant solution but it's simple enough and it works.
         tetromino.position[0] += 1
         fall_counter = 0
 
-        # Se il tetromino NON incontra qualcosa nella sua discesa naturale
+        # If the tetromino DOES NOT collide with anything while falling down
         if not board.is_valid_position(tetromino.get_shape(), tetromino.get_position()):
-            renderer.add_to_log(f"Incontrato tetromino in pos {tetromino.get_position()}.", window)
-            # Aggiustiamo la posizione e aggiorniamo la griglia.
+            renderer.add_to_log(f"Collided with a tetromino: pos {tetromino.get_position()}.", window)
+            # Fix the position and update the board.
             tetromino.move_up(board)
             board.update(tetromino)
-            # Controlliamo se, nel frattempo, il giocatore è riuscito a completare una riga.
+            # In the meanwhile, check if the player cleared a line...
             lines_cleared = board.clear_lines()
             if lines_cleared > 0:
-                renderer.add_to_log(f"Ripulite {tetromino.get_position()} righe.", window)
+                renderer.add_to_log(f"Cleared {tetromino.get_position()} lines.", window)
             game.increase_score(lines_cleared)
-            # Oppure, se è game over.
+            # ... or if it's game over.
             if game.check_game_over(board):
                 loop = False
-            # Infine, creiamo un altro tetromino.
+            # Finally, create the next new tetromino.
             tetromino = Tetromino()
             tetromino_counter += 1
-            renderer.add_to_log("Tetromino " + str(tetromino_counter) + " aggiunto.", window)
+            renderer.add_to_log("Tetromino " + str(tetromino_counter) + " added.", window)
 
-            ###
-            # INIZIO CODICE AI
-            ###
-            renderer.add_to_log("Inizio AI", window)
+            #########################################
+            # BEGIN EMBASP CODE                     #
+            #########################################
+            renderer.add_to_log("Start AI", window)
 
             ai_manager.add_tetromino(tetromino.get_type())
             ai_manager.add_busy_cells(board.get_list_of_busy_cells())
 
             position = ai_manager.get_Best_position()
 
-            # controlliamo che position non sia vuota
+            # Check if position isn't null
             if len(position) != 0:
                 renderer.add_to_log(f"Row decided by AI: {position[0]} --- Col decided by AI: {position[1]}", window)
                 print("position[0] is: ", position[0])
@@ -123,15 +122,15 @@ while loop:
 
                 tetromino.position[1] = int(position[1])
 
-            ###
-            # FINE CODICE AI
-            ###
-            renderer.add_to_log("Fine AI", window)
+            #########################################
+            # END EMBASP CODE                       #
+            #########################################
+            renderer.add_to_log("End AI", window)
 
-    # Fill nero
+    # Black background
     window.fill((0, 0, 0))
 
-    # Potrei unirlo in un'unica funzione render() che include tutte e tre
+    # Not very elegant, might switch to a more general Render() in the future
     renderer.render_log(window)
     renderer.render_board(window, board)
     renderer.render_game_info(window, game, tetromino_counter)
@@ -143,11 +142,11 @@ while loop:
     if is_paused:
         renderer.render_pause(window)
 
-    # Aggiorniamo finalmente il display
+    # Finally update the display
     pygame.display.update()
 
-    # 60 frame al secondo perché non siamo su console
+    # 60fps because we're not on console
     pygame.time.Clock().tick(60)
 
-# Graceful shut down perché ovviamente siamo eleganti solo quando ci è semplice esserlo
+# Graceful shut down because we're elegant only when it's easy
 pygame.quit()

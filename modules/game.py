@@ -4,10 +4,10 @@ class Game:
         self.level = 0
 
     def increase_score(self, lines_cleared):
-        # Un punto per ogni riga completata
+        # Add a point for every cleared line
         self.score += lines_cleared * self.level
 
-        # Ogni 20 (- livello attuale) punti aumenta la difficoltà
+        # Increase the difficulty every 20 (minus the current level) points
         if self.score >= 10 * self.level - self.level:
             self.level += 1
 

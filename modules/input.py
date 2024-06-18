@@ -8,8 +8,6 @@ class Input:
             pygame.K_RIGHT: "move_right",
             pygame.K_UP: "rotate",
             pygame.K_DOWN: "move_down",
-            # Comandi alternativi, pensavo di usare Q ed E per ruotare rispettivamente a sinistra e a destra,
-            # magari la prossima volta.
             pygame.K_a: "move_left",
             pygame.K_d: "move_right",
             pygame.K_w: "rotate",

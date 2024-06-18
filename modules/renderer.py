@@ -50,27 +50,27 @@ class Renderer:
                     pygame.draw.rect(window, color, ((position[1] + col) * block_size, (position[0] + row) * block_size, block_size, block_size))
 
     def render_log(self, window):
-        # Sfondo del log
+        # Log background
         pygame.draw.rect(window, self.GRAY, (self.log_x, self.log_y, self.log_width, self.log_height))
 
-        # Offset di base del testo
+        # Base text offset
         x = self.log_x + 10
         y = self.log_y + 10
 
-        # Max linee log
+        # Max log lines
         max_log_lines = self.log_height // 20  # Teoricamente questo dovrebbe riuscire a rendere le cose adaptive...?
 
-        # Renderizza i messaggi
+        # Render the log messages
         for message in self.log_messages[self.log_offset:self.log_offset + max_log_lines]:
             text_surface = self.log_font.render(message, True, self.WHITE)
             window.blit(text_surface, (x, y))
-            y += 20  # Lasciamo un po' di spazio per il prossimo messaggio
+            y += 20  # Offset for the next message
 
         self.render_scrollbar(window)
 
     def add_to_log(self, message, window):
         self.log_messages.append(message)
-        # Aggiorna l'offset per visualizzare automaticamente l'ultimo messaggio
+        # Update the offset in order to show the last message
         self.log_offset = max(0, len(self.log_messages) - self.log_height // 20)
         self.render_log(window)
 
@@ -82,37 +82,38 @@ class Renderer:
         self.render_log(window)
 
     def render_scrollbar(self, window):
-        # Dimensioni della scrollbar
+        # Scrollbar size
         scrollbar_width = 20
         scrollbar_height = self.log_height
 
-        # Calcola la lunghezza del thumb
+        # Calculate the thumb size
         total_log_lines = len(self.log_messages)
         max_log_lines = self.log_height // 20
-        min_thumb_height = 20  # Imposta una dimensione minima per la thumb
+        min_thumb_height = 20  # Thumb min size
 
         if total_log_lines > max_log_lines:
             thumb_height = max(min_thumb_height, scrollbar_height * max_log_lines / total_log_lines)
         else:
             thumb_height = scrollbar_height
 
-        # Calcola la posizione della thumb
+        # Calculate the thumb position
         if total_log_lines > max_log_lines:
             thumb_y = self.log_y + (scrollbar_height - thumb_height) * self.log_offset / (total_log_lines - max_log_lines)
         else:
             thumb_y = self.log_y
 
-        # Renderizza il track della scrollbar
+        # Render the scollbar's track
         pygame.draw.rect(window, self.DARK_GRAY, (self.log_x + self.log_width - scrollbar_width, self.log_y, scrollbar_width, scrollbar_height))
 
-        # Renderizza il thumb della scrollbar
+        # Render the scrollbar's thumb
         pygame.draw.rect(window, self.LIGHT_GRAY, (self.log_x + self.log_width - scrollbar_width, thumb_y, scrollbar_width, thumb_height))
 
     def render_pause(self, window):
-        text_surface = self.font.render("PAUSA", True, self.RED)
+        text_surface = self.font.render("PAUSE", True, self.RED)
         window.blit(text_surface, (400, 100))
 
     def render_vision(self, window, vision):
+        # New addition, shows all the possible positions that could've been chosen by the AI
         block_size = 30
         color = (139, 29, 38)
 
