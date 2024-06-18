@@ -54,10 +54,19 @@ class Board:
     def get_list_of_busy_cells(self):
 
         list_of_busy_cells = []
-        for row in range(len(self.grid)):
-            for col in range(len(self.grid[0])):
-                if (self.grid[row][col] != 0):
-                    list_of_busy_cells.append((row, col))
 
-        # print("list of busy cells: ", list_of_busy_cells)
+        # Legacy check
+        #for row in range(len(self.grid)):
+        #    for col in range(len(self.grid[0])):
+        #        if (self.grid[row][col] != 0):
+        #            list_of_busy_cells.append((row, col))
+
+        for col in range(len(self.grid[0])):
+            for row in range(len(self.grid)):
+                if (self.grid[row][col] != 0) :
+                    list_of_busy_cells.append((row, col))
+                    break
+
+        print(f"list_of_busy_cells: {list_of_busy_cells}")
+
         return list_of_busy_cells

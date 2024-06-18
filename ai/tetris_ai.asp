@@ -15,7 +15,7 @@ ceiling(R1, R) :- rows(R1), rows(R), R1 < R.
 % an equal way (but slower) would be:
 % ceiling(R1, R) :- cell(_, R1), cell(_, R), R1 < R.
 
-% Define if ceiling ain''t free
+% Define if ceiling isn''t free
 ceilingNotFree(X, Y) :- ceiling(Y1, Y), busyCell(X,Y1), Y<>Y1.
 
 % Can't be a location isn't chosen
