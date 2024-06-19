@@ -49,6 +49,10 @@ class Renderer:
                 if shape[row][col] != 0:
                     pygame.draw.rect(window, color, ((position[1] + col) * block_size, (position[0] + row) * block_size, block_size, block_size))
 
+    def render_game_over(self, window):
+        text_surface = self.font.render("GAME OVER. Press ENTER to quit.", True, self.RED)
+        window.blit(text_surface, (400, 100))
+
     def render_log(self, window):
         # Log background
         pygame.draw.rect(window, self.GRAY, (self.log_x, self.log_y, self.log_width, self.log_height))

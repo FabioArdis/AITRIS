@@ -2,7 +2,6 @@ from specializations.dlv2.desktop.dlv2_desktop_service import DLV2DesktopService
 from platforms.desktop.desktop_handler import DesktopHandler
 from languages.asp.asp_mapper import ASPMapper
 from languages.asp.asp_input_program import ASPInputProgram
-import time
 
 from ai.bestPos import AiBestPos
 from ai.validPosition import ValidPosition
@@ -59,10 +58,7 @@ class AiManager():
     def get_Best_position(self):
         list_aiPosition = []
 
-        start = time.time()
         answerSet = self.get_answer_set()
-        end = time.time()
-        print(f"Time taken for computation (dlv2) {end-start}")
 
         if (answerSet):
             get_first_answer_set = answerSet[0]

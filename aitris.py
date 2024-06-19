@@ -10,6 +10,7 @@
 """
 
 import pygame
+import time
 
 from modules.game import Game
 from modules.tetromino import Tetromino
@@ -20,20 +21,20 @@ from ai.ai_manager import AiManager
 
 preLogs = ["####### PRELOGS #######"]
 
-# Initialiaze PyGame
+# Initialize PyGame
 pygame.init()
 preLogs.append("PyGame initialized.")
 
-# Game window size W x H
+# Game window size W x H (actually unused)
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 600
 
-# Setup standard finestra
+# Set up the window
 window = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 pygame.display.set_caption('AITRIS - Powered by EmbASP')
 preLogs.append("Window initialized.")
 
-# Istanziamo le classi del gioco
+# Instantiate the game's classes
 game = Game()
 tetromino = Tetromino()
 board = Board()
@@ -57,27 +58,34 @@ tetromino_counter = 1
 position = []
 vision = []
 
-def exec_ai():
+quitting = False
 
+
+def exec_ai():
     global position
     global vision
+
+    start = time.time()
 
     ai_manager.add_tetromino(tetromino.get_type())
     ai_manager.add_busy_cells(board.get_list_of_busy_cells())
 
     position = ai_manager.get_Best_position()
 
-    # controlliamo che position non sia vuota
+    end = time.time()
+
+    # Check if the chosen position is valid
     if len(position) != 0:
-        renderer.add_to_log(f"Riga decisa dalla AI: {position[0]} --- Colonna decisa dalla AI: {position[1]}", window)
+        renderer.add_to_log(f"Best Position[{position[0]}][{position[1]}], Best Rotation: {int(ai_manager.get_rotation())}", window)
 
         tetromino.position[1] = int(position[1])
 
         for n in range(int(ai_manager.get_rotation())):
             tetromino.rotate(board)
-            print("Rotation! (caricato su git per temporaneo debug)")
 
     vision = [(position[i], position[i + 1]) for i in range(0, len(position), 2)]
+
+    renderer.add_to_log(f"AI took {end - start}s", window)
 
 # Execute the AI for the first Tetromino
 exec_ai()
@@ -111,13 +119,14 @@ while loop:
         # If the tetromino DOES NOT collide with anything while falling down
         if not board.is_valid_position(tetromino.get_shape(), tetromino.get_position()):
             renderer.add_to_log(f"Collided with a tetromino: pos {tetromino.get_position()}.", window)
+            renderer.add_to_log(" ", window)
             # Fix the position and update the board.
             tetromino.move_up(board)
             board.update(tetromino)
             # In the meanwhile, check if the player cleared a line...
             lines_cleared = board.clear_lines()
             if lines_cleared > 0:
-                renderer.add_to_log(f"Cleared {tetromino.get_position()} lines.", window)
+                renderer.add_to_log(f"Cleared a line.", window)
             game.increase_score(lines_cleared)
             # ... or if it's game over.
             if game.check_game_over(board):
@@ -125,19 +134,18 @@ while loop:
             # Finally, create the next new tetromino.
             tetromino = Tetromino()
             tetromino_counter += 1
+
             renderer.add_to_log("Tetromino " + str(tetromino_counter) + " added.", window)
 
             #########################################
             # BEGIN EMBASP CODE                     #
             #########################################
-            renderer.add_to_log("Start AI", window)
 
             exec_ai()
 
             #########################################
             # END EMBASP CODE                       #
             #########################################
-            renderer.add_to_log("End AI", window)
 
     # Black background
     window.fill((0, 0, 0))
@@ -156,8 +164,23 @@ while loop:
     # Finally update the display
     pygame.display.update()
 
-    # 240 frames per second because we're not on console
+    # 60 frames per second because we're not on console
     pygame.time.Clock().tick(240)
+
+
+while not quitting:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            quitting = True
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                quitting = True
+
+    renderer.render_game_over(window)
+
+    pygame.display.update()
+
+    pygame.time.Clock().tick(60)
 
 
 # Graceful shut down because we're elegant only when it's easy
