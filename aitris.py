@@ -55,6 +55,32 @@ is_paused = False
 tetromino_counter = 1
 
 position = []
+vision = []
+
+def exec_ai():
+
+    global position
+    global vision
+
+    ai_manager.add_tetromino(tetromino.get_type())
+    ai_manager.add_busy_cells(board.get_list_of_busy_cells())
+
+    position = ai_manager.get_Best_position()
+
+    # controlliamo che position non sia vuota
+    if len(position) != 0:
+        renderer.add_to_log(f"Riga decisa dalla AI: {position[0]} --- Colonna decisa dalla AI: {position[1]}", window)
+
+        tetromino.position[1] = int(position[1])
+
+        for n in range(int(ai_manager.get_rotation())):
+            tetromino.rotate(board)
+            print("Rotation! (caricato su git per temporaneo debug)")
+
+    vision = [(position[i], position[i + 1]) for i in range(0, len(position), 2)]
+
+# Execute the AI for the first Tetromino
+exec_ai()
 
 # Main Loop
 loop = True
@@ -106,21 +132,7 @@ while loop:
             #########################################
             renderer.add_to_log("Start AI", window)
 
-            ai_manager.add_tetromino(tetromino.get_type())
-            ai_manager.add_busy_cells(board.get_list_of_busy_cells())
-
-            position = ai_manager.get_Best_position()
-
-            # Check if position isn't null
-            if len(position) != 0:
-                renderer.add_to_log(f"Row decided by AI: {position[0]} --- Col decided by AI: {position[1]}", window)
-                print("position[0] is: ", position[0])
-                print("position[1] is: ", position[1])
-
-                for n in range(int(ai_manager.get_rotation())):
-                    tetromino.rotate(board)
-
-                tetromino.position[1] = int(position[1])
+            exec_ai()
 
             #########################################
             # END EMBASP CODE                       #
@@ -134,8 +146,7 @@ while loop:
     renderer.render_log(window)
     renderer.render_board(window, board)
     renderer.render_game_info(window, game, tetromino_counter)
-    vision = [(position[i], position[i + 1]) for i in range(0, len(position), 2)]
-    print("Ai Vision: ", vision)
+    # print("Ai Vision: ", vision)
     renderer.render_vision(window, vision)
     renderer.render_tetromino(window, tetromino)
 
@@ -145,8 +156,9 @@ while loop:
     # Finally update the display
     pygame.display.update()
 
-    # 60fps because we're not on console
-    pygame.time.Clock().tick(60)
+    # 240 frames per second because we're not on console
+    pygame.time.Clock().tick(240)
+
 
 # Graceful shut down because we're elegant only when it's easy
 pygame.quit()
