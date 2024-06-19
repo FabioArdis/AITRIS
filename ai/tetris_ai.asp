@@ -50,24 +50,24 @@ bestPos(Y, X, 1) | notBestPos(Y, X, 1):- maxRot0(X1, Y1), maxRot90(X, Y), Y >= Y
 %Prefer the bestPos where the Tetromino occupies the least space underneath
 :~ bestPos(Y, X, 0), checkCellBusy(X, Y+1), checkCellBusy(X+1, Y+1), checkCellBusy(X+2, Y+1), checkCellBusy(X+3, Y+1), spawnedTetromino(0). [1@0, Y, X]
 
-:~ bestPos(Y, X, 0), checkCellBusy(X, Y+1), checkCellBusy(X+1, Y+1), checkCellBusy(X+2, Y+1), checkCell(X+3, Y+1),     spawnedTetromino(0). [1@1, Y, X]
-:~ bestPos(Y, X, 0), checkCellBusy(X, Y+1), checkCellBusy(X+1, Y+1), checkCell(X+2, Y+1),     checkCellBusy(X+3, Y+1), spawnedTetromino(0). [1@1, Y, X]
-:~ bestPos(Y, X, 0), checkCellBusy(X, Y+1), checkCell(X+1, Y+1),     checkCellBusy(X+2, Y+1), checkCellBusy(X+3, Y+1), spawnedTetromino(0). [1@1, Y, X]
-:~ bestPos(Y, X, 0), checkCell(X, Y+1),     checkCellBusy(X+1, Y+1), checkCellBusy(X+2, Y+1), checkCellBusy(X+3, Y+1), spawnedTetromino(0). [1@1, Y, X]
+:~ bestPos(Y, X, 0), checkCellBusy(X, Y+1), checkCellBusy(X+1, Y+1), checkCellBusy(X+2, Y+1), checkCell    (X+3, Y+1), spawnedTetromino(0). [1@1, Y, X]
+:~ bestPos(Y, X, 0), checkCellBusy(X, Y+1), checkCellBusy(X+1, Y+1), checkCell    (X+2, Y+1), checkCellBusy(X+3, Y+1), spawnedTetromino(0). [1@1, Y, X]
+:~ bestPos(Y, X, 0), checkCellBusy(X, Y+1), checkCell    (X+1, Y+1), checkCellBusy(X+2, Y+1), checkCellBusy(X+3, Y+1), spawnedTetromino(0). [1@1, Y, X]
+:~ bestPos(Y, X, 0), checkCell    (X, Y+1), checkCellBusy(X+1, Y+1), checkCellBusy(X+2, Y+1), checkCellBusy(X+3, Y+1), spawnedTetromino(0). [1@1, Y, X]
 
-:~ bestPos(Y, X, 0), checkCellBusy(X, Y+1), checkCellBusy(X+1, Y+1), checkCell(X+2, Y+1),     checkCell(X+3, Y+1),     spawnedTetromino(0). [1@2, Y, X]
-:~ bestPos(Y, X, 0), checkCellBusy(X, Y+1), checkCell(X+1, Y+1),     checkCellBusy(X+2, Y+1), checkCell(X+3, Y+1),     spawnedTetromino(0). [1@2, Y, X]
-:~ bestPos(Y, X, 0), checkCellBusy(X, Y+1), checkCell(X+1, Y+1),     checkCell(X+2, Y+1),     checkCellBusy(X+3, Y+1), spawnedTetromino(0). [1@2, Y, X]
-:~ bestPos(Y, X, 0), checkCell(X, Y+1),     checkCellBusy(X+1, Y+1), checkCell(X+2, Y+1),     checkCellBusy(X+3, Y+1), spawnedTetromino(0). [1@2, Y, X]
-:~ bestPos(Y, X, 0), checkCell(X, Y+1),     checkCell(X+1, Y+1),     checkCellBusy(X+2, Y+1), checkCellBusy(X+3, Y+1), spawnedTetromino(0). [1@2, Y, X]
-:~ bestPos(Y, X, 0), checkCell(X, Y+1),     checkCellBusy(X+1, Y+1), checkCellBusy(X+2, Y+1), checkCell(X+3, Y+1),     spawnedTetromino(0). [1@2, Y, X]
+:~ bestPos(Y, X, 0), checkCellBusy(X, Y+1), checkCellBusy(X+1, Y+1), checkCell    (X+2, Y+1), checkCell    (X+3, Y+1), spawnedTetromino(0). [1@2, Y, X]
+:~ bestPos(Y, X, 0), checkCellBusy(X, Y+1), checkCell    (X+1, Y+1), checkCellBusy(X+2, Y+1), checkCell    (X+3, Y+1), spawnedTetromino(0). [1@2, Y, X]
+:~ bestPos(Y, X, 0), checkCellBusy(X, Y+1), checkCell    (X+1, Y+1), checkCell    (X+2, Y+1), checkCellBusy(X+3, Y+1), spawnedTetromino(0). [1@2, Y, X]
+:~ bestPos(Y, X, 0), checkCell    (X, Y+1), checkCellBusy(X+1, Y+1), checkCell    (X+2, Y+1), checkCellBusy(X+3, Y+1), spawnedTetromino(0). [1@2, Y, X]
+:~ bestPos(Y, X, 0), checkCell    (X, Y+1), checkCell    (X+1, Y+1), checkCellBusy(X+2, Y+1), checkCellBusy(X+3, Y+1), spawnedTetromino(0). [1@2, Y, X]
+:~ bestPos(Y, X, 0), checkCell    (X, Y+1), checkCellBusy(X+1, Y+1), checkCellBusy(X+2, Y+1), checkCell    (X+3, Y+1), spawnedTetromino(0). [1@2, Y, X]
 
-:~ bestPos(Y, X, 0), checkCell(X, Y+1),     checkCell(X+1, Y+1),     checkCell(X+2, Y+1),     checkCellBusy(X+3, Y+1), spawnedTetromino(0). [1@3, Y, X]
-:~ bestPos(Y, X, 0), checkCell(X, Y+1),     checkCell(X+1, Y+1),     checkCellBusy(X+2, Y+1), checkCell(X+3, Y+1),     spawnedTetromino(0). [1@3, Y, X]
-:~ bestPos(Y, X, 0), checkCell(X, Y+1),     checkCellBusy(X+1, Y+1), checkCell(X+2, Y+1),     checkCell(X+3, Y+1),     spawnedTetromino(0). [1@3, Y, X]
-:~ bestPos(Y, X, 0), checkCellBusy(X, Y+1), checkCell(X+1, Y+1),     checkCell(X+2, Y+1),     checkCell(X+3, Y+1),     spawnedTetromino(0). [1@3, Y, X]
+:~ bestPos(Y, X, 0), checkCell    (X, Y+1), checkCell    (X+1, Y+1), checkCell    (X+2, Y+1), checkCellBusy(X+3, Y+1), spawnedTetromino(0). [1@3, Y, X]
+:~ bestPos(Y, X, 0), checkCell    (X, Y+1), checkCell    (X+1, Y+1), checkCellBusy(X+2, Y+1), checkCell    (X+3, Y+1), spawnedTetromino(0). [1@3, Y, X]
+:~ bestPos(Y, X, 0), checkCell    (X, Y+1), checkCellBusy(X+1, Y+1), checkCell    (X+2, Y+1), checkCell    (X+3, Y+1), spawnedTetromino(0). [1@3, Y, X]
+:~ bestPos(Y, X, 0), checkCellBusy(X, Y+1), checkCell    (X+1, Y+1), checkCell    (X+2, Y+1), checkCell    (X+3, Y+1), spawnedTetromino(0). [1@3, Y, X]
 
-:~ bestPos(Y, X, 0), checkCell(X, Y+1), checkCell(X+1, Y+1), checkCell(X+2, Y+1), checkCell(X+3, Y+1), spawnedTetromino(0). [1@4, Y, X]
+:~ bestPos(Y, X, 0), checkCell    (X, Y+1), checkCell    (X+1, Y+1), checkCell    (X+2, Y+1), checkCell    (X+3, Y+1), spawnedTetromino(0). [1@4, Y, X]
 
 %90
 :~ bestPos(Y, X, 1), spawnedTetromino(0). [1@0, Y, X]
@@ -93,8 +93,8 @@ validPosition(X, Y, 1, 2) :- checkCell(X, Y + 1), checkCell(X + 1, Y + 1), check
 %270
 validPosition(X, Y, 1, 3) :- checkCell(X, Y), checkCell(X, Y + 1), checkCell(X, Y + 2), checkCell(X + 1, Y + 1),         not ceilingNotFree(X, Y + 2), not ceilingNotFree(X + 1, Y + 2), spawnedTetromino(1).
 
-maxRot0(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 1, 0)}, validPosition(X, Y, 1, 0).
-maxRot90(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 1, 1)}, validPosition(X, Y, 1, 1).
+maxRot0  (X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 1, 0)}, validPosition(X, Y, 1, 0).
+maxRot90 (X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 1, 1)}, validPosition(X, Y, 1, 1).
 maxRot180(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 1, 2)}, validPosition(X, Y, 1, 2).
 maxRot270(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 1, 3)}, validPosition(X, Y, 1, 3).
 

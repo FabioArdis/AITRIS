@@ -71,10 +71,11 @@ def exec_ai():
     if len(position) != 0:
         renderer.add_to_log(f"Riga decisa dalla AI: {position[0]} --- Colonna decisa dalla AI: {position[1]}", window)
 
+        tetromino.position[1] = int(position[1])
+
         for n in range(int(ai_manager.get_rotation())):
             tetromino.rotate(board)
-
-        tetromino.position[1] = int(position[1])
+            print("Rotation! (caricato su git per temporaneo debug)")
 
     vision = [(position[i], position[i + 1]) for i in range(0, len(position), 2)]
 
