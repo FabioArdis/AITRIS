@@ -50,7 +50,7 @@ class Renderer:
                     pygame.draw.rect(window, color, ((position[1] + col) * block_size, (position[0] + row) * block_size, block_size, block_size))
 
     def render_game_over(self, window):
-        text_surface = self.font.render("GAME OVER. Press ENTER to quit.", True, self.RED)
+        text_surface = self.font.render("GAME OVER. Press ESC to quit.", True, self.RED)
         window.blit(text_surface, (400, 100))
 
     def render_log(self, window):
