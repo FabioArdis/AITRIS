@@ -1,6 +1,3 @@
-#import time
-
-
 class Board:
     def __init__(self, rows=20, cols=10):
         self.rows = rows
@@ -8,7 +5,6 @@ class Board:
         self.grid = [[0] * cols for _ in range(rows)]
 
     def is_valid_position(self, shape, position):
-        # Check delle collisioni abbastanza rudimentale ma efficace
         for row in range(len(shape)):
             for col in range(len(shape[0])):
                 if shape[row][col] != 0:
@@ -21,7 +17,6 @@ class Board:
         return True
 
     def update(self, tetromino):
-        # Aggiorniamo la griglia una volta inserito il nostro tetramino
         shape = tetromino.get_shape()
         position = tetromino.get_position()
         color = tetromino.get_color()
@@ -29,9 +24,9 @@ class Board:
         for row in range(len(shape)):
             for col in range(len(shape[0])):
                 if shape[row][col] != 0:
-                     self.grid[position[0] + row][position[1] + col] = color
-                    # TODO IL CODICE DI SOPRA è QUELLO GIUSTO!
-                    # queste 2 righe qui sotto servono solo per debbugare meglio il comportamento della IA considerando il singolo pezzo, da solo, sulla board
+                    self.grid[position[0] + row][position[1] + col] = color
+                    # DEBUG CODE:
+                    # THE NEXT TWO LINES ARE HELPFUL FOR DEBUGGING THE AI BEHAVIOUR OF THE SINGLE PIECE
                     #self.grid = [[0] * 10 for _ in range(20)]
                     #time.sleep(0.3)
 
