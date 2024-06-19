@@ -62,7 +62,7 @@ The game is the classic Tetris: pile up various shape until you reach the roff
 
 In particular in this implementation:
 
-![red_dot](img/red_dot.jpg)
+![red_dot](img/red_dot.png)
 
 The read square is the position decide by the AI
 
@@ -74,31 +74,31 @@ The AI is been develop with this type of reasoning:
 - Prefer a rotation (for example with T we prefer the 180° rotation, always)
 - After selecting a Tetromino and his rotation, find the column where it fits better or where it occupies the least amount of empty blocks below
 
-Example to fits better:
+### Example to fits better:
 
-Prefer this:
+*Prefer* this:
 
 ![t_ok](img/t_ok.png)
 
-to this:
+_to this:_
 
 ![t_not_ok1](img/t_not_ok1.png)
 
-or this:
+_or this:_
 
 ![t_not_ok2](img/t_not_ok2.png)
 
 
-Example of occupies the least amount of empty blocks below:
+### Example of occupies the least amount of empty blocks below:
 
-Prefer this:
+*Prefer* this:
 
 ![cube_ok](img/cube_ok.png)
 
-to this:
+_to this:_
 
 ![cube_not_ok1](img/cube_not_ok1.png)
 
-or this:
+_or this:_
 
 ![cube_not_ok2](img/cube_not_ok2.png)
