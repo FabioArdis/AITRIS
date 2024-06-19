@@ -62,6 +62,8 @@ To play the game, simply run the main source file:
 python3.12 aitris.py
 ```
 
+You can pause the game by pressing the `P` key.
+
 # Game basics
 
 This is a classic tetromino puzzle game: stack various shapes until you reach the roof.
