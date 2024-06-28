@@ -76,11 +76,11 @@ def exec_ai():
 
     # Check if the chosen position is valid
     if len(position) != 0:
-        renderer.add_to_log(f"Best Position[{position[0]}][{position[1]}], Best Rotation: {int(ai_manager.get_rotation())}", window)
+        renderer.add_to_log(f"Best Position[{position[0]}][{position[1]}], Best Rotation: {ai_manager.get_rotation()}", window)
 
-        tetromino.position[1] = int(position[1])
+        tetromino.position[1] = position[1]
 
-        for n in range(int(ai_manager.get_rotation())):
+        for n in range(ai_manager.get_rotation()):
             tetromino.rotate(board)
 
     vision = [(position[i], position[i + 1]) for i in range(0, len(position), 2)]
