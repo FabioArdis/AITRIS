@@ -19,7 +19,7 @@ ceiling(R1, R) :- rows(R1), rows(R), R1 < R.
 ceilingNotFree(X, Y) :- ceiling(Y1, Y), busyCell(X,Y1), Y<>Y1.
 
 % Can't be a location isn't chosen
-:- #count{Y : bestPos(_, Y, _)} != 1.
+:- #count{Y, X, R: bestPos(Y, X, R)} <> 1. %>
 
 % ##########################################################################################################################################################
 % ##########################################################################################################################################################
@@ -38,13 +38,19 @@ ceilingNotFree(X, Y) :- ceiling(Y1, Y), busyCell(X,Y1), Y<>Y1.
 %0
 validPosition(X, Y, 0, 0) :- checkCell(X, Y), checkCell(X + 1, Y), checkCell(X + 2, Y), checkCell(X + 3, Y), not ceilingNotFree(X, Y), not ceilingNotFree(X + 1, Y), not ceilingNotFree(X + 2, Y), not ceilingNotFree(X + 3, Y), spawnedTetromino(0).
 %90
-validPosition(X, Y, 0, 1) :- checkCell(X, Y), checkCell(X, Y + 1), checkCell(X, Y + 2), checkCell(X, Y + 3), not ceilingNotFree(X, Y + 1), spawnedTetromino(0).
+%validPosition(X, Y, 0, 1) :- checkCell(X, Y), checkCell(X, Y + 1), checkCell(X, Y + 2), checkCell(X, Y + 3), not ceilingNotFree(X, Y + 1), spawnedTetromino(0).
+validPosition(X, Y, 0, 1) :- checkCell(X, Y), checkCell(X, Y - 1), checkCell(X, Y - 2), checkCell(X, Y-3), not ceilingNotFree(X, Y), spawnedTetromino(0).
 
-maxRot0(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 0, 0)}, validPosition(X, Y, 0, 0).
-maxRot90(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 0, 1)}, validPosition(X, Y, 0, 1).
+%maxRot0(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 0, 0)}, validPosition(X, Y, 0, 0).
+%maxRot90(X, Y) :- Y = #max{ Y1 : validPosition(_, Y1, 0, 1)}, validPosition(X, Y, 0, 1).
+%
+%bestPos(Y, X, 0) | notBestPos(Y, X, 0):- maxRot0(X, Y), maxRot90(X1, Y1), Y > Y1, spawnedTetromino(0).
+%bestPos(Y, X, 1) | notBestPos(Y, X, 1):- maxRot0(X1, Y1), maxRot90(X, Y), Y >= Y1, spawnedTetromino(0).
 
-bestPos(Y, X, 0) | notBestPos(Y, X, 0):- maxRot0(X, Y), maxRot90(X1, Y1), Y > Y1, spawnedTetromino(0).
-bestPos(Y, X, 1) | notBestPos(Y, X, 1):- maxRot0(X1, Y1), maxRot90(X, Y), Y >= Y1, spawnedTetromino(0).
+
+bestPos(Y, X, R) | nbestPos(Y, X, R):- validPosition(X, Y, 0, R), spawnedTetromino(0).
+
+:~ bestPos(Y, X, R), Y1=19-Y, spawnedTetromino(0). [Y1@0, Y1, X, R]
 
 %0
 %Prefer the bestPos where the Tetromino occupies the least space underneath
@@ -337,3 +343,6 @@ bestPos(Y, X, 1) | notBestPos(Y, X, 1):- maxRot0(X1, Y1), maxRot90(X, Y), Y >= Y
 %Prefer the bestPos where the Tetromino takes up the most space next to it
 :~ bestPos(Y, X, 1), checkCellBusy(X, Y+2), spawnedTetromino(6). [1@0, Y, X]
 :~ bestPos(Y, X, 1), checkCell(X, Y+2)    , spawnedTetromino(6). [1@1, Y, X]
+
+% default cost for all tetromino
+:~ bestPos(Y, X, R). [1@10, Y, X, R]

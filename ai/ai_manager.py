@@ -53,7 +53,8 @@ class AiManager():
         # Clear old previous ".add_program"
         self.asp_input_program_from_python.clear_all()
 
-        return answerSets.get_answer_sets()
+        return answerSets.get_optimal_answer_sets()
+        # return answerSets.get_answer_sets()
 
     def get_Best_position(self):
         list_aiPosition = []

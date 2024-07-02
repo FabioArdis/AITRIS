@@ -65,6 +65,8 @@ def exec_ai():
     global position
     global vision
 
+    print(f"Decided shape is {tetromino.get_shape()}")
+
     start = time.time()
 
     ai_manager.add_tetromino(tetromino.get_type())
