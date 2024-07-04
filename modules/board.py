@@ -56,10 +56,18 @@ class Board:
         #        if (self.grid[row][col] != 0):
         #            list_of_busy_cells.append((row, col))
 
+        # Get only the 'two top' busyCell
         for col in range(len(self.grid[0])):
             for row in range(len(self.grid)):
                 if (self.grid[row][col] != 0) :
                     list_of_busy_cells.append((row, col))
+                    new_row = row+1
+                    #print(f"CELL row: {row}, col: {col}")
+                    #print(f"CELL below new_row:{new_row}, col: {col}")
+                    #print(f"len self.grid is {len(self.grid)}")
+                    if new_row < len(self.grid):
+                        if (self.grid[new_row][col] != 0) :
+                            list_of_busy_cells.append((new_row, col))
                     break
 
         print(f"list_of_busy_cells: {list_of_busy_cells}")
