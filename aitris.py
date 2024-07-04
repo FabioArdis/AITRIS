@@ -79,11 +79,25 @@ def exec_ai():
     # Check if the chosen position is valid
     if len(position) != 0:
         renderer.add_to_log(f"Best Position[{position[0]}][{position[1]}], Best Rotation: {ai_manager.get_rotation()}", window)
+        
+        # Tremendous way to fix a niche problem 
+        #no = False
 
+        # Tremendous way to fix a niche problem 
+        # when tetromino L is decided with rotation 3 with position X=8 or more, the rotation will stuck to 1
+        #if position[1] >= 8:
+        #    tetromino.position[1] = position[1]-1
+        #    no = True
+        #else:
+        #    tetromino.position[1] = position[1]
         tetromino.position[1] = position[1]
 
         for n in range(ai_manager.get_rotation()):
             tetromino.rotate(board)
+
+        # Tremendous way to fix a niche problem 
+        #if no:
+        #    tetromino.position[1] = position[1]
 
     vision = [(position[i], position[i + 1]) for i in range(0, len(position), 2)]
 
