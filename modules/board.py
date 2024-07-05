@@ -70,6 +70,6 @@ class Board:
                             list_of_busy_cells.append((new_row, col))
                     break
 
-        print(f"list_of_busy_cells: {list_of_busy_cells}")
+        # print(f"list_of_busy_cells: {list_of_busy_cells}")
 
         return list_of_busy_cells

@@ -4,7 +4,6 @@ from languages.asp.asp_mapper import ASPMapper
 from languages.asp.asp_input_program import ASPInputProgram
 
 from ai.bestPos import AiBestPos
-#from ai.validPosition import ValidPosition
 
 
 def load_asp_program_from_file(asp_program_path, asp_input_program_from_file):
@@ -38,7 +37,6 @@ class AiManager():
         self.asp_input_program_from_file = ASPInputProgram()
         self.asp_input_program_from_python = ASPInputProgram()
 
-        #self.vision = []
         self.rotation = 0
 
         load_asp_program_from_file(asp_program_path, self.asp_input_program_from_file)
@@ -64,15 +62,13 @@ class AiManager():
         if (answerSet):
             get_first_answer_set = answerSet[0]
             for object in get_first_answer_set.get_atoms():
-                #if isinstance(object, ValidPosition):
-                #    self.vision.append((object.get_x(), object.get_y()))
                 if isinstance(object, AiBestPos):
                     list_aiPosition.append(object.get_row())
                     list_aiPosition.append(object.get_col())
 
                     self.rotation = object.get_rotation()
 
-            print("list: ", list_aiPosition)
+            # print("list: ", list_aiPosition)
 
         return list_aiPosition
 
@@ -89,6 +85,3 @@ class AiManager():
 
     def get_rotation(self):
         return self.rotation
-
-    #def get_vision(self):
-    #    return self.vision

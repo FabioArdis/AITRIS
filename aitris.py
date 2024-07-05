@@ -87,8 +87,6 @@ def exec_ai():
 
         # Tremendous way to fix a niche problem 
         # when tetromino L or T or J is decided with rotation 3 with position X=8 or more, the rotation will stuck to 1
-        # ATTENTION: some time a tetromino get outside
-        #print(f"shape is {Tetromino.SHAPES[1]}, and {Tetromino.SHAPES[2]} and {Tetromino.SHAPES[3]}")
         if tetromino.get_shape() == Tetromino.SHAPES[1] or tetromino.get_shape() == Tetromino.SHAPES[2] or tetromino.get_shape() == Tetromino.SHAPES[3] :
             if position[1] >= 7:
                 tetromino.position[1] = position[1]-1
