@@ -5,8 +5,9 @@ from languages.asp.asp_input_program import ASPInputProgram
 
 from ai.bestPos import AiBestPos
 
+from typing import List
 
-def load_asp_program_from_file(asp_program_path, asp_input_program_from_file):
+def load_asp_program_from_file(asp_program_path, asp_input_program_from_file) -> None:
 
     try:
         file = open(asp_program_path, "r")
@@ -54,7 +55,7 @@ class AiManager():
         return answerSets.get_optimal_answer_sets()
         # return answerSets.get_answer_sets()
 
-    def get_Best_position(self):
+    def get_Best_position(self) -> List:
         list_aiPosition = []
 
         answerSet = self.get_answer_set()
@@ -72,16 +73,16 @@ class AiManager():
 
         return list_aiPosition
 
-    def add_tetromino(self, type):
+    def add_tetromino(self, type) -> None:
         spawnedTetromino_str = "spawnedTetromino(" + str(type) + ")."
         self.asp_input_program_from_python.add_program(spawnedTetromino_str)
         # print("get_programs is: " + self.asp_input_program_from_python.get_programs())
         self.handler.add_program(self.asp_input_program_from_python)
 
-    def add_busy_cells(self, list_of_busy_cells):
+    def add_busy_cells(self, list_of_busy_cells: List) -> None:
         for coordinate in list_of_busy_cells:
             self.asp_input_program_from_python.add_program("busyCell(" + str(coordinate[1]) + ", " + str(coordinate[0]) + ").")
         self.handler.add_program(self.asp_input_program_from_python)
 
-    def get_rotation(self):
+    def get_rotation(self) -> int:
         return self.rotation

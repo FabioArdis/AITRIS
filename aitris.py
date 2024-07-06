@@ -26,8 +26,8 @@ pygame.init()
 preLogs.append("PyGame initialized.")
 
 # Game window size W x H (actually unused)
-WINDOW_WIDTH = 800
-WINDOW_HEIGHT = 600
+#WINDOW_WIDTH = 800
+#WINDOW_HEIGHT = 600
 
 # Set up the window
 window = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
@@ -54,6 +54,7 @@ fall_speed = 1
 fall_counter = 0
 is_paused = False
 tetromino_counter = 1
+FPS = 240
 
 position = []
 vision = []
@@ -87,9 +88,10 @@ def exec_ai():
 
         # Tremendous way to fix a niche problem 
         # when tetromino L or T or J is decided with rotation 3 with position X=8 or more, the rotation will stuck to 1
-        if tetromino.get_shape() == Tetromino.SHAPES[1] or tetromino.get_shape() == Tetromino.SHAPES[2] or tetromino.get_shape() == Tetromino.SHAPES[3] :
+        shape = tetromino.get_shape()
+        if shape == Tetromino.SHAPES[1] or shape == Tetromino.SHAPES[2] or shape == Tetromino.SHAPES[3] :
             if position[1] >= 7:
-                tetromino.position[1] = position[1]-1
+                tetromino.position[1] = position[1]-2
                 no = True
             else:
                 tetromino.position[1] = position[1]
@@ -185,7 +187,7 @@ while loop:
     pygame.display.update()
 
     # 60 frames per second because we're not on console
-    pygame.time.Clock().tick(240)
+    pygame.time.Clock().tick(FPS)
 
 
 while not quitting:
@@ -200,7 +202,7 @@ while not quitting:
 
     pygame.display.update()
 
-    pygame.time.Clock().tick(60)
+    pygame.time.Clock().tick(FPS)
 
 
 # Graceful shut down because we're elegant only when it's easy
