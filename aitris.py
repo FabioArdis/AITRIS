@@ -82,6 +82,8 @@ def exec_ai():
     # Check if the chosen position is valid
     if len(position) != 0:
         renderer.add_to_log(f"Best Position[{position[0]}][{position[1]}], Best Rotation: {ai_manager.get_rotation()}", window)
+        print(f"shape {tetromino.get_shape()}")
+        print(f"rotation {ai_manager.get_rotation()}")
         
         # Tremendous way to fix a niche problem 
         no = False
@@ -89,19 +91,19 @@ def exec_ai():
         # Tremendous way to fix a niche problem 
         # when tetromino L or T or J is decided with rotation 3 with position X=8 or more, the rotation will stuck to 1
         shape = tetromino.get_shape()
-        if shape == Tetromino.SHAPES[1] or shape == Tetromino.SHAPES[2] or shape == Tetromino.SHAPES[3] :
-            if position[1] >= 7:
-                tetromino.position[1] = position[1]-2
-                no = True
-            else:
-                tetromino.position[1] = position[1]
+#        if shape == Tetromino.SHAPES[1] or shape == Tetromino.SHAPES[2] or shape == Tetromino.SHAPES[3] :
+        if position[1] >= 5:
+            tetromino.position[1] = position[1]-4
+            no = True
         else:
             tetromino.position[1] = position[1]
+#        else:
+#            tetromino.position[1] = position[1]
 
         for n in range(ai_manager.get_rotation()):
             tetromino.rotate(board)
 
-        # Tremendous way to fix a niche problem 
+#        # Tremendous way to fix a niche problem 
         if no:
             tetromino.position[1] = position[1]
 

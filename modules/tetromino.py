@@ -24,7 +24,7 @@ class Tetromino:
 
     def __init__(self):
         # Randomize shape, color and type
-        self.type = random.randint(0, 6)
+        self.type = random.randint(3, 3)
         self.shape = self.SHAPES[self.type]
         self.color = random.choice(self.COLORS)
         self.position = [0, 0]
