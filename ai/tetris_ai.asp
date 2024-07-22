@@ -1,4 +1,15 @@
 
+% ##########################################################################################################################################################
+
+% INTRODUCTION
+
+% The program MUST get in input:
+% - at least one upper row of busy cells (of Tetromino already placed) to work (non optimally). To run the program HAS INTENDED should get two upper row of busy cells. More than two is useless
+% - a spawnedTetromino with the value ranging from 0 to 6
+
+% The program will find the 'best' (optimal) position for the Tetromino to be placed
+% with coordinate Y, X, (and number of) Rotation
+
 %  spawnedTetromino possible value:
 %  0 ,  equal to I
 %  1 ,  equal to T
@@ -8,10 +19,14 @@
 %  5 ,  equal to Z
 %  6 ,  equal to S
 
-% how weak constraint works:
+% how weak constraint works in this program:
 % level 0            :- maximum priority (rotation is more important)
 % level 1            :- same priority as height in the board (rotation and position have the same relevance)
 % level 2 or greater :- lowest priority (height is more important than rotation)
+
+% ##########################################################################################################################################################
+
+% ACTUAL PROGRAM
 
 % Define Rows
 rows(0..19).
@@ -87,6 +102,11 @@ validPosition(X, Y, 1) :- checkCell(X, Y), checkCell(X, Y - 1), checkCell(X, Y -
 
 %90
 :~ bestPos(Y, X, R), spawnedTetromino(0), R=1. [0@0, Y, X]
+
+%90. Prefer a position closest to the boarder of the map
+:~ bestPos(Y, X, R), spawnedTetromino(0), R=1, X<5. [X@0, Y, X]
+:~ bestPos(Y, X, R), spawnedTetromino(0), R=1, X>=5. [9-X@0, Y, X]
+% why 'X<5' or 'X>=5'? Because the columns goes from 0 to 9 (10 columns). Whe need to discourage the median, so 10/2=5
 
 % ##########################################################################################################################################################
 % ##########################################################################################################################################################
