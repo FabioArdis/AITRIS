@@ -56,6 +56,7 @@ class Tetromino:
         new_shape = [list(row) for row in zip(*self.shape[::-1])]
         if board.is_valid_position(new_shape, self.position):
             self.shape = [list(row) for row in zip(*self.shape[::-1])]
+        # self.shape = [list(row) for row in zip(*self.shape[::-1])]
 
     # Only getters, you shouldn't be able to change shape, color and type.
     def get_shape(self):

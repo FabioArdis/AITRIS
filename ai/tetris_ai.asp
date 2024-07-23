@@ -282,9 +282,9 @@ validPosition(X, Y, 0) :- checkCell(X, Y), checkCell(X + 1, Y), checkCell(X, Y +
 %0
 %Prefer the bestPos where the Tetromino occupies the least space underneath
 :~ bestPos(Y, X, 0), checkCellBusy(X, Y+2), checkCellBusy(X+1, Y+2), spawnedTetromino(4). [0@0, Y, X]
-:~ bestPos(Y, X, 0), checkCell    (X, Y+2), checkCellBusy(X+1, Y+2), spawnedTetromino(4). [1@3, Y, X]
-:~ bestPos(Y, X, 0), checkCellBusy(X, Y+2), checkCell    (X+1, Y+2), spawnedTetromino(4). [2@3, Y, X]
-:~ bestPos(Y, X, 0), checkCell    (X, Y+2), checkCell    (X+1, Y+2), spawnedTetromino(4). [3@3, Y, X]
+:~ bestPos(Y, X, 0), checkCell    (X, Y+2), checkCellBusy(X+1, Y+2), spawnedTetromino(4). [2@1, Y, X]
+:~ bestPos(Y, X, 0), checkCellBusy(X, Y+2), checkCell    (X+1, Y+2), spawnedTetromino(4). [3@1, Y, X]
+:~ bestPos(Y, X, 0), checkCell    (X, Y+2), checkCell    (X+1, Y+2), spawnedTetromino(4). [4@1, Y, X]
 
 % ##########################################################################################################################################################
 % ##########################################################################################################################################################
@@ -308,11 +308,29 @@ validPosition(X, Y, 1) :- checkCell(X + 1, Y), checkCell(X, Y + 1), checkCell(X 
 %Prefer the bestPos where the Tetromino takes up the most space next to it
 :~ bestPos(Y, X, R), checkCellBusy(X, Y+1), spawnedTetromino(5), R=0. [1@0, Y, X, R]
 :~ bestPos(Y, X, R), checkCell    (X, Y+1), spawnedTetromino(5), R=0. [2@0, Y, X, R]
+%:~ bestPos(Y, X, R), checkCellBusy(X, Y+2), checkCellBusy(X+1, Y+2), checkCellBusy(X+2, Y+2), spawnedTetromino(5), R=0. [1@1, Y, X, R]
+%:~ bestPos(Y, X, R), checkCellBusy(X, Y+2), checkCellBusy(X+1, Y+2), checkCell    (X+2, Y+2), spawnedTetromino(5), R=0. [3@1, Y, X, R]
+%:~ bestPos(Y, X, R), checkCellBusy(X, Y+2), checkCell    (X+1, Y+2), checkCellBusy(X+2, Y+2), spawnedTetromino(5), R=0. [3@1, Y, X, R]
+%:~ bestPos(Y, X, R), checkCell    (X, Y+2), checkCellBusy(X+1, Y+2), checkCellBusy(X+2, Y+2), spawnedTetromino(5), R=0. [3@1, Y, X, R]
+%:~ bestPos(Y, X, R), checkCellBusy(X, Y+2), checkCell    (X+1, Y+2), checkCell    (X+2, Y+2), spawnedTetromino(5), R=0. [3@1, Y, X, R]
+%:~ bestPos(Y, X, R), checkCell    (X, Y+2), checkCellBusy(X+1, Y+2), checkCell    (X+2, Y+2), spawnedTetromino(5), R=0. [3@1, Y, X, R]
+%:~ bestPos(Y, X, R), checkCell    (X, Y+2), checkCell    (X+1, Y+2), checkCellBusy(X+2, Y+2), spawnedTetromino(5), R=0. [3@1, Y, X, R]
+
+:~ bestPos(Y, X, R), checkCell    (X+1, Y+2), checkCell   (X+2, Y+2), spawnedTetromino(5), R=0. [2@3, Y, X, R]
+:~ bestPos(Y, X, R), checkCell    (X, Y+2), spawnedTetromino(5), R=0. [3@3, Y, X, R]
+%:~ bestPos(Y, X, R), checkCell    (X+1, Y+2), spawnedTetromino(5), R=0. [4@3, Y, X, R]
 
 %90
 %Prefer the bestPos where the Tetromino takes up the most space next to it
 :~ bestPos(Y, X, R), checkCellBusy(X+1, Y+2), spawnedTetromino(5), R=1. [0@0, Y, X, R]
 :~ bestPos(Y, X, R), checkCell    (X+1, Y+2), spawnedTetromino(5), R=1. [3@0, Y, X, R]
+%:~ bestPos(Y, X, R), checkCellBusy(X, Y+3), checkCellBusy(X+1, Y+3), spawnedTetromino(5), R=1. [1@1, Y, X, R]
+%:~ bestPos(Y, X, R), checkCell    (X, Y+3), checkCellBusy(X+1, Y+3), spawnedTetromino(5), R=1. [2@1, Y, X, R]
+%:~ bestPos(Y, X, R), checkCellBusy(X, Y+3), checkCell    (X+1, Y+3), spawnedTetromino(5), R=1. [3@1, Y, X, R]
+%:~ bestPos(Y, X, R), checkCell    (X, Y+3), checkCell    (X+1, Y+3), spawnedTetromino(5), R=1. [4@1, Y, X, R]
+
+%:~ bestPos(Y, X, R), checkCell    (X, Y+3), spawnedTetromino(5), R=1. [1@3, Y, X, R]
+:~ bestPos(Y, X, R), checkCellBusy(X, Y+3), spawnedTetromino(5), R=1. [0@3, Y, X, R]
 
 % ##########################################################################################################################################################
 % ##########################################################################################################################################################
@@ -336,6 +354,9 @@ validPosition(X, Y, 1) :- checkCell(X, Y)    , checkCell(X, Y + 1), checkCell(X 
 %Prefer the bestPos where the Tetromino takes up the most space next to it
 :~ bestPos(Y, X, R), checkCellBusy(X+2, Y+1), spawnedTetromino(6), R=0. [1@0, Y, X, R]
 :~ bestPos(Y, X, R), checkCell    (X+2, Y+1), spawnedTetromino(6), R=0. [2@0, Y, X, R]
+
+:~ bestPos(Y, X, R), checkCell    (X, Y+2), checkCell   (X+1, Y+2), spawnedTetromino(6), R=0. [2@3, Y, X, R]
+:~ bestPos(Y, X, R), checkCell    (X, Y+2), spawnedTetromino(6), R=0. [3@3, Y, X, R]
 
 %90
 %Prefer the bestPos where the Tetromino takes up the most space next to it
