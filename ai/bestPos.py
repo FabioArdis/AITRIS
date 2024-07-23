@@ -11,20 +11,26 @@ class AiBestPos(Predicate):
         self.col = col
         self.rotation = rotation
 
-    def get_row(self):
-        return self.row
+    def get_row(self) -> int:
+        if self.row is None:
+            raise ValueError("row is not set")
+        return int(self.row)
 
     def set_row(self, row):
         self.row = row
 
-    def get_col(self):
-        return self.col
+    def get_col(self) -> int:
+        if self.col is None:
+            raise ValueError("col is not set")
+        return int(self.col)
 
     def set_col(self, col):
         self.col = col
 
+    def get_rotation(self) -> int:
+        if self.rotation is None:
+            raise ValueError("rotation is not set")
+        return int(self.rotation)
+
     def set_rotation(self, rotation):
         self.rotation = rotation
-
-    def get_rotation(self):
-        return self.rotation

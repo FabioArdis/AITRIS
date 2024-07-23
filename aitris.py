@@ -26,8 +26,8 @@ pygame.init()
 preLogs.append("PyGame initialized.")
 
 # Game window size W x H (actually unused)
-WINDOW_WIDTH = 800
-WINDOW_HEIGHT = 600
+#WINDOW_WIDTH = 800
+#WINDOW_HEIGHT = 600
 
 # Set up the window
 window = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
@@ -54,6 +54,7 @@ fall_speed = 1
 fall_counter = 0
 is_paused = False
 tetromino_counter = 1
+FPS = 240
 
 position = []
 vision = []
@@ -65,10 +66,14 @@ def exec_ai():
     global position
     global vision
 
-    start = time.time()
+    print(f"Decided shape is {tetromino.get_shape()}")
+
+    print(f"tetromino number {tetromino_counter}")
 
     ai_manager.add_tetromino(tetromino.get_type())
     ai_manager.add_busy_cells(board.get_list_of_busy_cells())
+
+    start = time.time()
 
     position = ai_manager.get_Best_position()
 
@@ -76,16 +81,36 @@ def exec_ai():
 
     # Check if the chosen position is valid
     if len(position) != 0:
-        renderer.add_to_log(f"Best Position[{position[0]}][{position[1]}], Best Rotation: {int(ai_manager.get_rotation())}", window)
+        renderer.add_to_log(f"Best Position[{position[0]}][{position[1]}], Best Rotation: {ai_manager.get_rotation()}", window)
+        print(f"shape {tetromino.get_shape()}")
+        print(f"rotation {ai_manager.get_rotation()}")
+        
+        # Tremendous way to fix a niche problem 
+        no = False
+        can_rotate = True
 
-        tetromino.position[1] = int(position[1])
+        if ai_manager.get_rotation() > 0:
 
-        for n in range(int(ai_manager.get_rotation())):
-            tetromino.rotate(board)
+            for n in range(ai_manager.get_rotation()):
+                can_rotate = tetromino.rotate(board)
+
+        if can_rotate:
+            # Tremendous way to fix a niche problem 
+            # when tetromino L or T or J is decided with rotation 3 with position X=8 or more, the rotation will stuck to 1
+            if position[1] >= 6:
+                tetromino.position[1] = 6
+                no = True
+            else:
+                tetromino.position[1] = position[1]
+
+#        # Tremendous way to fix a niche problem 
+            if no:
+                tetromino.position[1] = position[1]
 
     vision = [(position[i], position[i + 1]) for i in range(0, len(position), 2)]
 
-    renderer.add_to_log(f"AI took {end - start}s", window)
+
+    renderer.add_to_log(f"AI took {str(end - start)[:6]}s", window)
 
 # Execute the AI for the first Tetromino
 exec_ai()
@@ -165,7 +190,7 @@ while loop:
     pygame.display.update()
 
     # 60 frames per second because we're not on console
-    pygame.time.Clock().tick(240)
+    pygame.time.Clock().tick(FPS)
 
 
 while not quitting:
@@ -180,7 +205,7 @@ while not quitting:
 
     pygame.display.update()
 
-    pygame.time.Clock().tick(60)
+    pygame.time.Clock().tick(FPS)
 
 
 # Graceful shut down because we're elegant only when it's easy
