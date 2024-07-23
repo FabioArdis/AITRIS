@@ -25,10 +25,6 @@ class Board:
             for col in range(len(shape[0])):
                 if shape[row][col] != 0:
                     self.grid[position[0] + row][position[1] + col] = color
-                    # DEBUG CODE:
-                    # THE NEXT TWO LINES ARE HELPFUL FOR DEBUGGING THE AI BEHAVIOUR OF THE SINGLE PIECE
-                    #self.grid = [[0] * 10 for _ in range(20)]
-                    #time.sleep(0.3)
 
     def clear_lines(self):
         lines_cleared = 0

@@ -1,32 +1,39 @@
 
-% ##########################################################################################################################################################
+% ######################################################################################################################
 
 % INTRODUCTION
 
-% The program MUST get in input:
-% - at least one upper row of busy cells (of Tetromino already placed) to work (non optimally). To run the program HAS INTENDED should get two upper row of busy cells. More than two is useless
-% - a spawnedTetromino with the value ranging from 0 to 6
+% The program MUST receive in input:
+% - at least a single upper row of busy cells to work, but to run optimally, it needs to receive two upper rows.
+%   to take into consideration more than two upper rows is uselessly resource intensive.
+% - a spawnedTetromino with a value (its type) ranging from 0 to 6
 
-% The program will find the 'best' (optimal) position for the Tetromino to be placed
-% with coordinate Y, X, (and number of) Rotation
+% The program searches for the 'best' (optimal) position for the current Tetromino.
+% The BestPosition has three parameters: Y and X coords and the number of rotation steps needed.
 
-%  spawnedTetromino possible value:
-%  0 ,  equal to I
-%  1 ,  equal to T
-%  2 ,  equal to L
-%  3 ,  equal to J
-%  4 ,  equal to Cube
-%  5 ,  equal to Z
-%  6 ,  equal to S
+% spawnedTetromino's value range and the associated tetromino shapes:
+% 0 - I
+% 1 - T
+% 2 - L
+% 3 - J
+% 4 - Cube
+% 5 - Z
+% 6 - S
 
-% how weak constraint works in this program:
-% level 0            :- maximum priority (rotation is more important)
-% level 1            :- same priority as height in the board (rotation and position have the same relevance)
-% level 2 or greater :- lowest priority (height is more important than rotation)
+% Weak constraints' layers:
+% Level 0            :- Associated with best-case rotations. Top priority, can impose over height priority.
+% Level 1            :- Used in niche cases where rotation and height don't matter in the reasoning
+% Level 2 or greater :- Associated with height, has the lowest priority
 
-% ##########################################################################################################################################################
+% Reasoning bias order:
 
-% ACTUAL PROGRAM
+% Best-case rotation (might have a worst height than other choices, but it's always a better choice overall) >
+% Niche case where rotation and height don't matter >
+% Proceeds as usual and takes the best height with the best rotation.
+
+% ######################################################################################################################
+
+% ASP PROGRAM START
 
 % Define Rows
 rows(0..19).
@@ -42,13 +49,11 @@ checkCell(X, Y) :- cell(X, Y), not busyCell(X, Y).
 
 % Define ceiling
 ceiling(R1, R) :- rows(R1), rows(R), R1 < R.
-% an equal way (but slower) would be:
-% ceiling(R1, R) :- cell(_, R1), cell(_, R), R1 < R.
 
-% Define if ceiling isn''t free
+% Define if ceiling isn't free
 ceilingNotFree(X, Y) :- ceiling(Y1, Y), busyCell(X,Y1), Y<>Y1.
 
-% Can't be a location isn't chosen
+% The reasoning can choose exactly a single position.
 :- #count{Y, X, R: bestPos(Y, X, R)} <> 1. %>
 
 % Choose a position
@@ -57,9 +62,9 @@ bestPos(Y, X, R) | nbestPos(Y, X, R):- validPosition(X, Y, R).
 % Choose the lowest possible position
 :~ bestPos(Y, X, R), Y1=19-Y. [Y1@1, Y1, R]
 
-% ##########################################################################################################################################################
-% ##########################################################################################################################################################
-% ##########################################################################################################################################################
+% ######################################################################################################################
+% ######################################################################################################################
+% ######################################################################################################################
 
 %          0°                    90°
 %   ################            ####
@@ -102,14 +107,14 @@ validPosition(X, Y, 1) :- checkCell(X, Y), checkCell(X, Y - 1), checkCell(X, Y -
 %90
 :~ bestPos(Y, X, R), spawnedTetromino(0), R=1. [0@0, Y, X]
 
-%90. Prefer a position closest to the boarder of the map
+%90. Prefer the position closest to the border of the map
 :~ bestPos(Y, X, R), spawnedTetromino(0), R=1, X<5. [X@0, Y, X]
 :~ bestPos(Y, X, R), spawnedTetromino(0), R=1, X>=5. [9-X@0, Y, X]
-% why 'X<5' or 'X>=5'? Because the columns goes from 0 to 9 (10 columns). Whe need to discourage the median, so 10/2=5
+% Why? We don't want the I-shaped tetromino to be put in the middle of a row. It's not optimal.
 
-% ##########################################################################################################################################################
-% ##########################################################################################################################################################
-% ##########################################################################################################################################################
+% ######################################################################################################################
+% ######################################################################################################################
+% ######################################################################################################################
 
 %        0°                     90°                 180°                270°
 %   ############                ####                ####                ####
@@ -127,9 +132,6 @@ validPosition(X, Y, 1) :- checkCell(X + 1, Y), checkCell(X + 1, Y + 1), checkCel
 validPosition(X, Y, 2) :- checkCell(X, Y + 1), checkCell(X + 1, Y + 1), checkCell(X + 2, Y + 1), checkCell(X + 1, Y), not ceilingNotFree(X, Y + 1), not ceilingNotFree(X + 1, Y + 1), not ceilingNotFree(X + 2, Y + 1), spawnedTetromino(1).
 %270
 validPosition(X, Y, 3) :- checkCell(X, Y), checkCell(X, Y + 1), checkCell(X, Y + 2), checkCell(X + 1, Y + 1),         not ceilingNotFree(X, Y + 2), not ceilingNotFree(X + 1, Y + 2), spawnedTetromino(1).
-
-%bestPos(Y, X, R) | nbestPos(Y, X, R):- validPosition(X, Y, 1, R).
-%:~ bestPos(Y, X, R), Y1=19-Y, spawnedTetromino(1). [Y1@1, Y1, R]
 
 %0
 %Prefer the bestPos where the Tetromino takes up the most space next to it
@@ -159,9 +161,9 @@ validPosition(X, Y, 3) :- checkCell(X, Y), checkCell(X, Y + 1), checkCell(X, Y +
 :~ bestPos(Y, X, R), checkCellBusy(X+1, Y+2), spawnedTetromino(1), R=3. [1@0, Y, X, R]
 :~ bestPos(Y, X, R), checkCell    (X+1, Y+2), spawnedTetromino(1), R=3. [8@0, Y, X, R]
 
-% ##########################################################################################################################################################
-% ##########################################################################################################################################################
-% ##########################################################################################################################################################
+% ######################################################################################################################
+% ######################################################################################################################
+% ######################################################################################################################
 
 %        0°                     90°                 180°                270°
 %   ############            ########                    ####            ####
@@ -212,9 +214,9 @@ validPosition(X, Y, 3) :- checkCell(X, Y), checkCell(X, Y + 1), checkCell(X, Y +
 :~ bestPos(Y, X, R), checkCell    (X, Y+3), checkCellBusy(X+1, Y+3), spawnedTetromino(2), R=3. [10@0, Y, X, R]
 :~ bestPos(Y, X, R), checkCell    (X, Y+3), checkCell    (X+1, Y+3), spawnedTetromino(2), R=3. [11@0, Y, X, R]
 
-% ##########################################################################################################################################################
-% ##########################################################################################################################################################
-% ##########################################################################################################################################################
+% ######################################################################################################################
+% ######################################################################################################################
+% ######################################################################################################################
 
 %        0°                     90°                 180°                270°
 %   ############                ####            ####                    ########
@@ -265,9 +267,9 @@ validPosition(X, Y, 3) :- checkCell(X, Y), checkCell(X + 1, Y), checkCell(X, Y +
 :~ bestPos(Y, X, R), checkCell    (X+1, Y+1), checkCellBusy(X+1, Y+2), spawnedTetromino(3), R=3. [7@0, Y, X, R]
 :~ bestPos(Y, X, R), checkCell    (X+1, Y+1), checkCell    (X+1, Y+2), spawnedTetromino(3), R=3. [12@0, Y, X, R]
 
-% ##########################################################################################################################################################
-% ##########################################################################################################################################################
-% ##########################################################################################################################################################
+% ######################################################################################################################
+% ######################################################################################################################
+% ######################################################################################################################
 
 %      0°
 %   ########
@@ -285,9 +287,9 @@ validPosition(X, Y, 0) :- checkCell(X, Y), checkCell(X + 1, Y), checkCell(X, Y +
 :~ bestPos(Y, X, 0), checkCellBusy(X, Y+2), checkCell    (X+1, Y+2), spawnedTetromino(4). [3@1, Y, X]
 :~ bestPos(Y, X, 0), checkCell    (X, Y+2), checkCell    (X+1, Y+2), spawnedTetromino(4). [4@1, Y, X]
 
-% ##########################################################################################################################################################
-% ##########################################################################################################################################################
-% ##########################################################################################################################################################
+% ######################################################################################################################
+% ######################################################################################################################
+% ######################################################################################################################
 
 %          0°                 90°
 %   ########                    ####
@@ -316,9 +318,9 @@ validPosition(X, Y, 1) :- checkCell(X + 1, Y), checkCell(X, Y + 1), checkCell(X 
 :~ bestPos(Y, X, R), checkCell    (X+1, Y+2), spawnedTetromino(5), R=1. [3@0, Y, X, R]
 :~ bestPos(Y, X, R), checkCellBusy(X, Y+3), spawnedTetromino(5), R=1. [0@3, Y, X, R]
 
-% ##########################################################################################################################################################
-% ##########################################################################################################################################################
-% ##########################################################################################################################################################
+% ######################################################################################################################
+% ######################################################################################################################
+% ######################################################################################################################
 
 %          0°                 90°
 %       ########            ####
@@ -345,3 +347,7 @@ validPosition(X, Y, 1) :- checkCell(X, Y)    , checkCell(X, Y + 1), checkCell(X 
 %Prefer the bestPos where the Tetromino takes up the most space next to it
 :~ bestPos(Y, X, R), checkCellBusy(X, Y+2), spawnedTetromino(6), R=1. [0@0, Y, X, R]
 :~ bestPos(Y, X, R), checkCell    (X, Y+2), spawnedTetromino(6), R=1. [3@0, Y, X, R]
+
+% ASP PROGRAM END
+
+% ######################################################################################################################
