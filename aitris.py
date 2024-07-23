@@ -70,10 +70,10 @@ def exec_ai():
 
     print(f"tetromino number {tetromino_counter}")
 
-    start = time.time()
-
     ai_manager.add_tetromino(tetromino.get_type())
     ai_manager.add_busy_cells(board.get_list_of_busy_cells())
+
+    start = time.time()
 
     position = ai_manager.get_Best_position()
 
@@ -87,25 +87,30 @@ def exec_ai():
         
         # Tremendous way to fix a niche problem 
         no = False
+        can_rotate = True
 
-        # Tremendous way to fix a niche problem 
-        # when tetromino L or T or J is decided with rotation 3 with position X=8 or more, the rotation will stuck to 1
-        if position[1] >= 6:
-            tetromino.position[1] = 6
-            no = True
-        else:
-            tetromino.position[1] = position[1]
+        if ai_manager.get_rotation() > 0:
 
-        for n in range(ai_manager.get_rotation()):
-            tetromino.rotate(board)
+            for n in range(ai_manager.get_rotation()):
+                can_rotate = tetromino.rotate(board)
+
+        if can_rotate:
+            # Tremendous way to fix a niche problem 
+            # when tetromino L or T or J is decided with rotation 3 with position X=8 or more, the rotation will stuck to 1
+            if position[1] >= 6:
+                tetromino.position[1] = 6
+                no = True
+            else:
+                tetromino.position[1] = position[1]
 
 #        # Tremendous way to fix a niche problem 
-        if no:
-            tetromino.position[1] = position[1]
+            if no:
+                tetromino.position[1] = position[1]
 
     vision = [(position[i], position[i + 1]) for i in range(0, len(position), 2)]
 
-    renderer.add_to_log(f"AI took {end - start}s", window)
+
+    renderer.add_to_log(f"AI took {str(end - start)[:6]}s", window)
 
 # Execute the AI for the first Tetromino
 exec_ai()

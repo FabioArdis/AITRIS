@@ -27,7 +27,7 @@ class Tetromino:
         self.type = random.randint(0, 6)
         self.shape = self.SHAPES[self.type]
         self.color = random.choice(self.COLORS)
-        self.position = [0, 0]
+        self.position = [0, 4]
 
     # ALWAYS CHECK if the position and rotation are valid
     def move_down(self, board):
@@ -56,7 +56,9 @@ class Tetromino:
         new_shape = [list(row) for row in zip(*self.shape[::-1])]
         if board.is_valid_position(new_shape, self.position):
             self.shape = [list(row) for row in zip(*self.shape[::-1])]
-        # self.shape = [list(row) for row in zip(*self.shape[::-1])]
+        else:
+            return False
+        return True
 
     # Only getters, you shouldn't be able to change shape, color and type.
     def get_shape(self):
