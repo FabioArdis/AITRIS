@@ -82,8 +82,8 @@ def exec_ai():
     # Check if the chosen position is valid
     if len(position) != 0:
         renderer.add_to_log(f"Best Position[{position[0]}][{position[1]}], Best Rotation: {ai_manager.get_rotation()}", window)
-        print(f"shape {tetromino.get_shape()}")
-        print(f"rotation {ai_manager.get_rotation()}")
+#        print(f"shape {tetromino.get_shape()}")
+#        print(f"rotation {ai_manager.get_rotation()}")
         
         # Tremendous way to fix a niche problem 
         no = False
@@ -160,7 +160,7 @@ while loop:
             tetromino = Tetromino()
             tetromino_counter += 1
 
-            renderer.add_to_log("Tetromino " + str(tetromino_counter) + " added.", window)
+            renderer.add_to_log("Tetromino " + str(tetromino_counter) + "(" + str(tetromino.get_f_type()) + ")" + " added.", window)
 
             #########################################
             # BEGIN EMBASP CODE                     #

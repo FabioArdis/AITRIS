@@ -61,8 +61,6 @@ class Tetromino:
         return True
 
     # Only getters, you shouldn't be able to change shape, color and type.
-    def get_shape(self):
-        return self.shape
 
     def get_position(self):
         return self.position
@@ -72,3 +70,23 @@ class Tetromino:
 
     def get_type(self):
         return self.type
+
+    def get_shape(self):
+        return self.shape
+    
+    def get_f_type(self):
+        if self.type == 0:
+            return "I"
+        if self.type == 1:
+            return "T"
+        if self.type == 2:
+            return "J"
+        if self.type == 3:
+            return "L"
+        if self.type == 4:
+            return "Cube"
+        if self.type == 5:
+            return "Z"
+        if self.type == 6:
+            return "S"
+        return "Prova"

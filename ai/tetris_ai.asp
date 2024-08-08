@@ -48,7 +48,7 @@ checkCellBusy(X, Y) :- cell(X, Y), busyCell(X, Y).
 checkCell(X, Y) :- cell(X, Y), not busyCell(X, Y).
 
 % Define ceiling
-ceiling(R1, R) :- rows(R1), rows(R), R1 < R.
+ceiling(R1, R) :- rows(R1), rows(R), R1 < R. %>
 
 % Define if ceiling isn't free
 ceilingNotFree(X, Y) :- ceiling(Y1, Y), busyCell(X,Y1), Y<>Y1.
